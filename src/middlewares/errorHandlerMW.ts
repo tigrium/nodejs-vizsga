@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 /**
  * A route lista végén elkapja a hibákat, logolja a hibaüzenetet, hibaoldalt renderel.

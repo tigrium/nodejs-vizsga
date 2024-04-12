@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 export const renderMW =
   (objectRepo: ObjectRepository, templateFile: string) =>

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 /**
  * A `locals.forgotPass` alapján kiválasztott igénylés userének jelszavát módosítja a paraméterben (`body.pass`) kapottra.

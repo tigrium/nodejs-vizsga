@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 /**
  * Lekéri a `:secret` alapján, hogy érvényes jelszó igénylés-e. Ha nem, hibát dob.

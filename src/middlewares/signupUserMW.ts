@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 /**
  * Leellenőrzi, hogy létezik-e már az email-cím (`body.email`).

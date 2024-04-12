@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 /**
  * A bejelentkezett (`locals.me`) felhasználó bejegyzéseit menti a `locals.myposts` értékbe.

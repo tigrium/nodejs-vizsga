@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { MistakeError, ObjectRepository } from "../utils/types";
+import { MistakeError, ObjectRepository } from "../service/types";
 
 /**
  * Hibakezelő middleware. A kapott `MistakeError` hiba message-ét elmenti a `locals.error` értékbe.

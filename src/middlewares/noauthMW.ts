@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../utils/types";
+import { ObjectRepository } from "../service/types";
 
 /**
  * Ha van `locals.me` érték, kijelentkeztet és a paraméterben kapott oldalra irányít át.
