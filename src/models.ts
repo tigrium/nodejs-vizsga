@@ -1,3 +1,6 @@
+export const MIN_PASS_LENGTH = 8;
+export const MIN_NICKNAME_LENGTH = 2;
+
 export type User = {
   id: string;
   email: string;
