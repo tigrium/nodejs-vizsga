@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import { sessionCheckMW } from "../middlewares";
 
 const app = express();
 const port = 3000;
@@ -18,8 +19,8 @@ app.get(
   },
   (req: Request, res: Response) => {
     console.log(3);
-    res.send(res.locals.message ?? res.locals.error)
-  },
+    res.send(res.locals.message ?? res.locals.error);
+  }
 );
 
 app.listen(port, () => {
