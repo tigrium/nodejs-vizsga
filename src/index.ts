@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { sessionCheckMW } from "../middlewares";
+import { sessionCheckMW } from "./middlewares";
 
 const app = express();
 const port = 3000;
