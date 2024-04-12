@@ -20,3 +20,5 @@ export { getUsersMW } from "./getUsersMW";
 export { mapUsersMW } from "./mapUsersMW";
 export { getPostsMW } from "./getPostsMW";
 export { errorHandlerMW } from "./errorHandlerMW";
+export { renderMW } from "./renderMW";
+export { redirectMW } from "./redirectMW";
