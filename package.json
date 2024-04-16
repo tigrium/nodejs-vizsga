@@ -8,12 +8,14 @@
     "start": "node dist/index.js",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "copyEjs": "copyfiles  -u 1 src/views/* dist/",
-    "postbuild": "npm run copyEjs"
+    "buildCss": "sass src/scss/theme.scss public/theme.css",
+    "postbuild": "npm run copyEjs && npm run buildCss"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/express-session": "^1.18.0",
+    "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.19.2",
@@ -27,6 +29,7 @@
     "@types/node": "^20.12.5",
     "copyfiles": "^2.4.1",
     "nodemon": "^3.1.0",
+    "sass": "^1.75.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4"
   }

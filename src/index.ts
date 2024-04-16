@@ -6,6 +6,7 @@ import { addRoutes } from "./routing";
 import { initDatabase } from "./service/db";
 import { getProcessEnv, initProcessEnv } from "./service/processEnv";
 import { getSessionMW } from "./middlewares/getSessionMW";
+import { staticRouter } from "./routing/static";
 
 initProcessEnv();
 
@@ -14,10 +15,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(getSessionMW(app));
-
 initDatabase()
   .then((db) => {
+    app.use(staticRouter());
+    app.use(getSessionMW(app));
+
     addRoutes(app, db);
 
     const port = getProcessEnv("PORT", (v) => parseInt(v, 10), 3000);

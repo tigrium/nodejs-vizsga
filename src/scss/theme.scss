@@ -1,0 +1,16 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+// merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, (
+  "primary": #1b8392,
+  "secondary": #112f20,
+  "warning": #e57e12,
+  "danger": #e12346,
+  "info": #862303,
+
+  "light": $gray-300
+));
+
+// set changes
+@import "../../node_modules/bootstrap/scss/bootstrap";
