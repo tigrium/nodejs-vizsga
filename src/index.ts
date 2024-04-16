@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import path from "path";
 
 import { addRoutes } from "./routing";
+import { initDatabase } from "./service/db";
 
 const PORT = 3000;
 
@@ -11,10 +12,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-addRoutes(app);
+initDatabase()
+  .then((db) => {
+    addRoutes(app, db);
 
-app.listen(PORT, () => {
-  console.log(
-    `[server]: Server is running at http://localhost:${PORT}`
-  );
-});
+    app.listen(PORT, () => {
+      console.log(
+        `[server]: Server is running at http://localhost:${PORT}`
+      );
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });

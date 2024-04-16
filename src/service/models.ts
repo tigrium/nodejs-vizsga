@@ -4,7 +4,7 @@ export const MIN_NICKNAME_LENGTH = 2;
 export type User = {
   id: string;
   email: string;
-  password: string;
+  passwordHash: string;
   name: string;
 };
 
@@ -12,14 +12,14 @@ export type OriginalPost = {
   id: string;
   userId: string;
   text: string;
-  ts: Date;
+  ts: number;
 }
 
 export type RePost = {
   id: string;
   userId: string;
   postId: string;
-  ts: Date;
+  ts: number;
 }
 
 export type Post = OriginalPost | RePost;
@@ -27,5 +27,5 @@ export type Post = OriginalPost | RePost;
 export type ForgotPass = {
   userId: string;
   secret: string;
-  used: Date | null;
+  valid: number;
 }

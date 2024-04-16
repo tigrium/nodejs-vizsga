@@ -8,10 +8,10 @@ import {
   errorHandlerMW,
   getMyPostMW,
   getMyPostsMW,
+  getPostsByUserMW,
   getPostsMW,
   getUsersMW,
   loginUserMW,
-  mapUsersMW,
   mistakeHandlerMW,
   noauthMW,
   postMW,
@@ -25,9 +25,10 @@ import {
   setUserDataMW,
   signupUserMW,
 } from "../middlewares";
+import { KukoriDb } from "../service/db";
 
-export const addRoutes = (app: Express) => {
-  const objectRepository = {};
+export const addRoutes = (app: Express, db: KukoriDb) => {
+  const objectRepository = { db };
 
   app.use(sessionCheckMW(objectRepository));
 
@@ -168,9 +169,20 @@ export const addRoutes = (app: Express) => {
   );
 
   app.get(
+    "/users",
+    getUsersMW(objectRepository),
+    renderMW(objectRepository, "users")
+  );
+
+  app.get(
+    "/posts/:userId",
+    getPostsByUserMW(objectRepository),
+    renderMW(objectRepository, "posts")
+  );
+
+  app.get(
     "/",
     getUsersMW(objectRepository),
-    mapUsersMW(objectRepository),
     getPostsMW(objectRepository),
     renderMW(objectRepository, "posts")
   );
