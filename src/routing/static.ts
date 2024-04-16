@@ -13,6 +13,7 @@ export const staticRouter = () => {
   );
   router.use("/js", express.static("node_modules/bootstrap/dist/js"));
   // router.use("/js", express.static("node_modules/jquery/dist"));
+  router.use("/font", express.static("node_modules/bootstrap-icons/font"))
 
   return router;
 };
