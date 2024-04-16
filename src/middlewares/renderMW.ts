@@ -4,9 +4,13 @@ import { ObjectRepository } from "../service/types";
 export const renderMW =
   (objectRepo: ObjectRepository, templateFile: string) =>
   (req: Request, res: Response) => {
-    if (templateFile === "myPosts") {
-      return res.render(templateFile, res.locals);
-    }
-    res.json({ templateFile, data: res.locals });
-    // res.render(templateFile, res.locals);
+    res.render(templateFile, res.locals, (err, html) => {
+      if (err) {
+        console.log(res.locals);
+        return res.json({
+          templateFile,
+        });
+      }
+      res.send(html);
+    });
   };
