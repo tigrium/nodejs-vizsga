@@ -185,6 +185,7 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     getUsersMW(objectRepository),
     getPostsMW(objectRepository),
     renderMW(objectRepository, "posts")
+    // renderMW(objectRepository, "error")
   );
 
   app.get("*", redirectMW(objectRepository, "/"));

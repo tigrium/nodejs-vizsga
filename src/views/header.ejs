@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link rel="icon" href="/favicon.svg" />
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="/css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="/theme.css" />
+    <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="/font/bootstrap-icons.css" />
+
+    <title>Kukori - Induljon kukorékolással a nap.</title>
+  </head>
+  <body class="d-flex flex-column overflow-hidden" style="height: 100vh">
+
+    <nav class="navbar navbar-light bg-light py-3">
+      <div class="container-fluid">
+        <div class="d-flex flex-row align-items-end">
+          <a href="/">
+            <img src="/logo.svg" style="height: 36px" alt="Kukori"
+          /></a>
+          <span class="ms-2 d-none d-md-inline-block" style="margin-bottom: -6px;">Induljon kukorékolással a nap.</span>
+        </div>
+        <div>
+          <a
+            href="/users"
+            class="btn btn-link link-primary text-decoration-none"
+            ><span class="d-none d-md-inline-block me-1">Felhasználók</span><i class="bi bi-people"></i
+              ></a
+          >
+          <% if (typeof me === 'undefined') { %>
+          <a
+            href="/login"
+            class="btn btn-link link-primary text-decoration-none"
+            >Bejelentkezés</a
+          >
+          <% } else { %>
+          <a
+            href="/profile"
+            class="btn btn-link link-primary text-decoration-none"
+            ><span class="d-none d-md-inline-block me-1"><%= me.name %></span><i class="bi bi-person"></i
+          ></a>
+          <% } %>
+        </div>
+      </div>
+    </nav>
+
+    <div class="flex-fill overflow-auto container-center">
+    <div class="container-md p-3">

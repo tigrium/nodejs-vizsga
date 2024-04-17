@@ -47,6 +47,9 @@ export const initDatabase = (): Promise<KukoriDb> => {
           reject(err);
         }
         console.log("Database saved after init.");
+        // console.table(userModel.find());
+        // console.table(postModel.find());
+        // console.table(forgotPassModel.find());
         resolve({
           database,
           models: { postModel, userModel, forgotPassModel },

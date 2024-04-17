@@ -1,61 +1,9 @@
-<!DOCTYPE html>
-<html lang="hu">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+<%- include('header') %>
+<% if (typeof posts !== 'undefined') { %>
+  <% posts.forEach(post => { %>
+    <%- include('post', {post}) %>
+  <% }) %>
+<% } %>
 
-    <link rel="icon" href="/favicon.svg">
 
-    <!-- Bootstrap CSS -->
-    <!-- <link rel="stylesheet" href="/css/bootstrap.min.css" /> -->
-    <link rel="stylesheet" href="/theme.css" />
-    <!-- Bootstrap Font Icon CSS -->
-    <link rel="stylesheet" href="/font/bootstrap-icons.css">
-
-    <title>Kukori - Induljon kukorékolással a nap!</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
-        <div class="d-flex flex-row align-items-end">
-          <a href="/">
-            <img src="/logo.svg" style="height: 36px" alt="Kukori"
-          /></a>
-          <span class="ms-2">Induljon kukorékolással a nap</span>
-        </div>
-        <div>
-          <a
-            href="/users"
-            class="btn btn-link link-primary text-decoration-none"
-            >Felhasználók</a
-          >
-          <a
-            href="/login"
-            class="btn btn-link link-primary text-decoration-none"
-            >Bejelentkezés</a
-          >
-          <a
-            href="/profile"
-            class="btn btn-link link-primary text-decoration-none"
-            >Felhasználó név <i class="bi bi-person"></i
-          ></a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container p-3">
-      App content
-      <span class="btn btn-primary">primary button</span>
-      <div class="container-center p-5"><img src="/heihei.gif" class="image-fluid" /></div>
-    </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- <script src="https://code.jquery.comjs/jquery-3.5.1.slim.min.js"></script> -->
-    <script src="/js/bootstrap.min.js"></script>
-  </body>
-</html>
+<%- include('footer') %>
