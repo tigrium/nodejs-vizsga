@@ -5,7 +5,7 @@ import { ForgotPassSecretInput } from '../service/inputSchemas';
 import { isAfter } from 'date-fns';
 
 /**
- * Lekéri a `:secret` alapján, hogy érvényes jelszó igénylés-e. Ha nem, hibát dob.
+ * Lekéri a `:secret` alapján, hogy érvényes-e a jelszó igénylés és a `locals.ok`-ba menti.
  * Ha érvényes, a `locals.forgotPass` értékbe menti az igénylés db objektumát.
  */
 export const checkForgotPassMW =
@@ -21,18 +21,19 @@ export const checkForgotPassMW =
       res.locals.ok = false;
       return next();
     }
-    if (isAfter(new Date(forgotPass.valid), new Date())) {
-      res.locals.ok = true;
-      res.locals.forgotPass = forgotPass;
-      return next();
+
+    res.locals.ok = isAfter(new Date(forgotPass.valid), new Date());
+
+    if (!res.locals.ok) {
+      try {
+        objectRepo.db.models.forgotPassModel.remove(forgotPass);
+        objectRepo.db.database.save();
+      } catch (err) {
+        return next(err);
+      }
     }
 
-    try {
-      objectRepo.db.models.forgotPassModel.remove(forgotPass);
-      objectRepo.db.database.save();
-    } catch (err) {
-      return next(err);
-    }
-
+    res.locals.ok = true;
+    res.locals.forgotPass = forgotPass;
     next();
   };
