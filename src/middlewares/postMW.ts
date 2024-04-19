@@ -7,5 +7,6 @@ import { ObjectRepository } from "../service/types";
 export const postMW =
   (objectRepo: ObjectRepository) =>
   (req: Request, res: Response, next: NextFunction) => {
+    console.log("post something...")
     next();
   };

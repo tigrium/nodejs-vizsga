@@ -8,7 +8,7 @@ export type ObjectRepository = {
 };
 
 export type PostToRender = Omit<OriginalPost, "userId" | "ts"> & {
-  user: string;
+  user?: string;
   ts: string;
   original?: {
     user: string;

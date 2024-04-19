@@ -18,8 +18,24 @@
   </div>
 </div>
 <div class="text-end">
-  <button class="btn btn-link link-primary text-decoration-none">
-    Ez tetszik, kikukorékolom!
-  </button>
+  <% if (typeof myPost === 'undefined' || !myPost) { %>
+    <button class="btn btn-link link-primary text-decoration-none">
+      Ez tetszik, kikukorékolom!
+    </button>
+  <% } %>
+  <div class="d-flex flex-direction-row justify-content-end">
+    <% if (typeof myPost !== 'undefined' && myPost) { %>
+      <form>
+        <button class="btn btn-link link-danger text-decoration-none">
+          Törlés
+        </button>
+      </form>
+      <% if (typeof post.original === 'undefined') { %>
+        <a href="/edit-post/:postId" class="btn btn-link link-primary text-decoration-none">
+          Szerkesztés
+        </a>
+      <% } %>
+    <% } %>
+  </div>
 </div>
 <% } %>

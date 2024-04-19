@@ -1,0 +1,82 @@
+<%- include('header') %>
+
+<main class="container m-auto my-5" style="max-width: 500px">
+  <form>
+    <h1 class="h3 mb-3 fw-normal">Profilom</h1>
+
+    <p class="text-danger">Hibaüzenet itt jelenik meg.</p>
+
+    <div class="input-group mb-3 my-2">
+      <span class="input-group-text"
+        ><i class="bi bi-envelope-at"></i
+      ></span>
+      <div class="form-floating">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          placeholder="name@example.com"
+        />
+        <label for="email">E-mail cím</label>
+      </div>
+    </div>
+
+    <div class="input-group mb-3 my-2">
+      <span class="input-group-text"><i class="bi bi-key"></i></span>
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="pass"
+          placeholder="Password"
+        />
+        <label for="pass">Jelszó</label>
+      </div>
+    </div>
+
+    <div class="input-group mb-3 my-2">
+      <span class="input-group-text"><i class="bi bi-key"></i></span>
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="passAgain"
+          placeholder="Password"
+        />
+        <label for="passAgain">Jelszó újra</label>
+      </div>
+    </div>
+
+    <div class="input-group mb-3 my-2">
+      <span class="input-group-text"
+        ><i class="bi bi-person-vcard"></i
+      ></span>
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Név"
+        />
+        <label for="name">Megjelenítendő név</label>
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-100 py-2 my-2" type="submit">
+      Módosít
+    </button>
+  </form>
+
+  <a href="/my-posts" class="btn btn-outline-primary my-2 w-100 py-2">
+    Kikukorékolt gondolataim
+  </a>
+
+  <form>
+    <button class="btn btn-outline-primary w-100 py-2 my-2" type="submit">
+      Kijelentkezés
+    </button>
+  </form>
+</main>
+
+<%- include('footer') %>

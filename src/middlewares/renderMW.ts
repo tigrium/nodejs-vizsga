@@ -6,10 +6,9 @@ export const renderMW =
   (req: Request, res: Response) => {
     res.render(templateFile, res.locals, (err, html) => {
       if (err) {
+        console.log(err);
         console.log(res.locals);
-        return res.json({
-          templateFile,
-        });
+        return res.render('error');
       }
       res.send(html);
     });
