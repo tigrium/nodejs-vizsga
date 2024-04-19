@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { MistakeError, ObjectRepository } from '../service/types';
 import { inputCheck } from '../service/inputCheck';
-import { ForgotPassSecretInput } from '../service/inputSchemas';
+import { UuidInput } from '../service/inputSchemas';
 import { isAfter } from 'date-fns';
 
 /**
@@ -10,8 +10,7 @@ import { isAfter } from 'date-fns';
  */
 export const checkForgotPassMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
-    console.log('checkForgotPassMW');
-    const mistakes = await inputCheck(req.params.secret, ForgotPassSecretInput);
+    const mistakes = await inputCheck(req.params.secret, UuidInput);
     if (mistakes.length > 0) {
       next(new MistakeError(mistakes));
     }

@@ -1,9 +1,9 @@
 import { ZodError, ZodType } from 'zod';
 
-export const inputCheck = async (body: any, inputType: ZodType) => {
+export const inputCheck = async (input: any, inputType: ZodType) => {
   const mistakes = [] as string[];
   try {
-    await inputType.parseAsync(body);
+    await inputType.parseAsync(input);
   } catch (err) {
     if (err instanceof ZodError) {
       console.log('errors', err);

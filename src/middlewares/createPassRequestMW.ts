@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { addDays } from 'date-fns';
+import { addHours } from 'date-fns';
 
 import { MistakeError, ObjectRepository } from '../service/types';
 import { ForgotPassInput } from '../service/inputSchemas';
@@ -12,23 +12,21 @@ import { ForgotPass } from '../service/models';
  */
 export const createPassRequestMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
-    console.log('createPassRequestMW');
     const mistakes = await inputCheck(req.body, ForgotPassInput);
-
     if (mistakes.length > 0) {
       return next(new MistakeError(mistakes));
     }
 
     const user = objectRepo.db.models.userModel.findOne({ email: req.body.email });
-
     if (!user) {
+      // Nem tájékoztatjuk a felhasználót, hogy az adott cím regisztrálva van-e a rendszerben.
       return next();
     }
 
     const forgotpass: ForgotPass = {
       userId: user.id,
       secret: objectRepo.uuid(),
-      valid: addDays(new Date(), 30).getTime(),
+      valid: addHours(new Date(), 1).getTime(),
     };
 
     try {
@@ -43,9 +41,10 @@ export const createPassRequestMW =
       subject: 'Elfelejtett jelszó kérés',
       message: `Kedves ${user.name}!
 
-Ezen a címen állíthatsz be új jelszót: ${req.protocol}://${req.headers.host}/forgotpass/${forgotpass.secret}.
-A link 30 napig érvényes.
+Ezen a címen állíthatsz be új jelszót: ${req.protocol}://${req.headers.host}/forgotpass/${forgotpass.secret}
+A link 1 órán keresztül érvényes.
 
+Üdvözlettel,
 Kukori`,
     });
 

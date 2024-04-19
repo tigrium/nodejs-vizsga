@@ -1,5 +1,7 @@
 import Loki, { Collection } from 'lokijs';
-import { ForgotPass, Post, User } from './models';
+import { ForgotPass, OriginalPost, Post, RePost, User } from './models';
+import { PostToRender } from './types';
+import { formatTs } from './formatDate';
 
 export type KukoriDb = {
   database: Loki;
@@ -43,8 +45,11 @@ export const initDatabase = (): Promise<KukoriDb> => {
           reject(err);
         }
         console.log('Database saved after init.');
+        console.log('users:');
         console.table(userModel.find());
+        console.log('posts:');
         console.table(postModel.find());
+        console.log('forgotpass:');
         console.table(forgotPassModel.find());
         resolve({
           database,
@@ -55,4 +60,98 @@ export const initDatabase = (): Promise<KukoriDb> => {
   });
 };
 
-module.exports.initDatabase = initDatabase;
+export class UserNameResolver {
+  private userModel: Collection<User>;
+  private userNames: Map<string, string>;
+
+  constructor(userModel: Collection<User>) {
+    this.userModel = userModel;
+    this.userNames = new Map<string, string>();
+  }
+
+  getName(id: string) {
+    if (this.userNames.has(id)) {
+      return this.userNames.get(id) as string;
+    }
+    const user = this.userModel.findOne({ id });
+    if (!user) {
+      throw new Error('Felhasználó nem található.');
+    }
+    this.userNames.set(id, user.name);
+    return user.name;
+  }
+}
+
+export class PostResolver {
+  private postModel: Collection<Post>;
+  private nameResolver: UserNameResolver;
+
+  constructor(postModel: Collection<Post>, userModel: Collection<User>) {
+    this.postModel = postModel;
+    this.nameResolver = new UserNameResolver(userModel);
+  }
+
+  private originalPost(post: Post, withoutUser?: boolean): PostToRender | null {
+    if (!Object.keys(post).includes('text')) {
+      return null;
+    }
+    const { id, userId, text, ts } = post as OriginalPost;
+    const toRender: PostToRender = {
+      id,
+      text,
+      ts: formatTs(ts),
+    };
+    if (!withoutUser) {
+      toRender.user = this.nameResolver.getName(userId);
+    }
+    return toRender;
+  }
+
+  private userAndTs(post: Post): PostToRender['original'] {
+    return {
+      user: this.nameResolver.getName(post.userId),
+      ts: formatTs(post.ts),
+    };
+  }
+
+  private rePost(post: Post, withoutUser?: boolean): PostToRender | null {
+    if (!Object.keys(post).includes('postId')) {
+      return null;
+    }
+
+    const originalPost = this.postModel.findOne({ id: (post as RePost).postId }) as OriginalPost;
+    if (!originalPost) {
+      throw new Error('Post nem található.');
+    }
+
+    const { id, userId, ts } = post;
+    const original = this.userAndTs(originalPost);
+    const toRender: PostToRender = {
+      id,
+      text: originalPost.text,
+      ts: formatTs(ts),
+      original,
+    };
+    if (!withoutUser) {
+      toRender.user = this.nameResolver.getName(userId);
+    }
+    return toRender;
+  }
+
+  getPosts(): PostToRender[] {
+    return this.postModel
+      .find()
+      .sort((a, b) => (a.ts > b.ts ? -1 : 1))
+      .map((post) => this.originalPost(post) ?? (this.rePost(post) as PostToRender));
+  }
+
+  getPostsByUser(userId: string): { user: string; posts: PostToRender[] } {
+    return {
+      user: this.nameResolver.getName(userId),
+      posts: this.postModel
+        .find()
+        .sort((a, b) => (a.ts > b.ts ? -1 : 1))
+        .map((post) => this.originalPost(post, true) ?? (this.rePost(post, true) as PostToRender)),
+    };
+  }
+}

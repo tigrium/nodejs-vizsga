@@ -23,6 +23,6 @@ export const getMyPostsMW = (objectRepo: ObjectRepository) => (req: Request, res
     },
   ];
   res.locals.posts = posts;
-  res.locals.myPosts = true;
+  res.locals.myposts = true;
   next();
 };

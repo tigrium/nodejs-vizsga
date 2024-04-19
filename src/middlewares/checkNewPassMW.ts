@@ -5,7 +5,7 @@ import { SetPassInput } from '../service/inputSchemas';
 import { inputCheck } from '../service/inputCheck';
 
 /**
- * Leellenőrzi a POST-ban kapott két jelszót (`body.pass`, `body.passAgain`), hogy egyeznek-e és elég hosszú-e. Ha nem, hibát dob.
+ * Leellenőrzi a POST-ban kapott két jelszót (`body.pass`, `body.passAgain`), hogy egyeznek-e és elég hosszúak-e. Ha nem, hibát dob.
  */
 export const checkNewPassMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {

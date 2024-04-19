@@ -5,36 +5,32 @@
     <div class="fw-lighter" style="font-size: 80%;"><%= post.ts %></div>
   </div>
   <div class="card-body">
-    <blockquote class="blockquote mb-0">
-      <p><%= post.text %></p>
-      <% if (typeof post.original !== 'undefined') { %>
-      <footer class="blockquote-footer">
-        <%= post.original.user %>&nbsp;<span class="fw-lighter" style="font-size: 80%;"
-          >(<%= post.original.ts %>)</span
-        >
-      </footer>
-      <% } %>
-    </blockquote>
+    <p style="white-space: pre-line"><%= post.text %></p>
+    <% if (typeof post.original !== 'undefined') { %>
+    <footer class="blockquote-footer">
+      <%= post.original.user %>&nbsp;<span class="fw-lighter" style="font-size: 80%;">(<%= post.original.ts %>)</span>
+    </footer>
+    <% } %>
   </div>
 </div>
 <div class="text-end">
-  <% if (typeof myPost === 'undefined' || !myPost) { %>
-    <button class="btn btn-link link-primary text-decoration-none">
-      Ez tetszik, kikukorékolom!
-    </button>
+  <% if ((typeof edit === 'undefined' || !edit) && loggedIn) { %>
+  <button class="btn btn-link link-primary text-decoration-none">
+    Ez tetszik, kikukorékolom!
+  </button>
   <% } %>
   <div class="d-flex flex-direction-row justify-content-end">
-    <% if (typeof myPost !== 'undefined' && myPost) { %>
-      <form action="/remove-post/:postId" method="post">
-        <button class="btn btn-link link-danger text-decoration-none">
-          Törlés
-        </button>
-      </form>
-      <% if (typeof post.original === 'undefined') { %>
-        <a href="/edit-post/:postId" class="btn btn-link link-primary text-decoration-none">
-          Szerkesztés
-        </a>
-      <% } %>
+    <% if (typeof edit !== 'undefined' && edit) { %>
+    <form action="/remove-post/<%= post.id %>" method="post">
+      <button class="btn btn-link link-danger text-decoration-none">
+        Törlés
+      </button>
+    </form>
+    <% if (typeof post.original === 'undefined') { %>
+    <a href="/edit-post/<%= post.id %>" class="btn btn-link link-primary text-decoration-none">
+      Szerkesztés
+    </a>
+    <% } %>
     <% } %>
   </div>
 </div>

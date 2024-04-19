@@ -104,6 +104,8 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     authMW(objectRepository),
     postMW(objectRepository),
     redirectMW(objectRepository, '/'),
+    mistakeHandlerMW(objectRepository),
+    renderMW(objectRepository, 'posts'),
   );
 
   app.post(
@@ -142,7 +144,7 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
 
   app.get('/posts/:userId', getPostsByUserMW(objectRepository), renderMW(objectRepository, 'posts'));
 
-  app.get('/', getUsersMW(objectRepository), getPostsMW(objectRepository), renderMW(objectRepository, 'posts'));
+  app.get('/', getPostsMW(objectRepository), renderMW(objectRepository, 'posts'));
 
   app.get('*', redirectMW(objectRepository, '/'));
 

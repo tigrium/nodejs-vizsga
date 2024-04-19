@@ -18,7 +18,7 @@ export const LoginInput = z.object({
   pass: passCheck,
 });
 
-export const ForgotPassSecretInput = z.string().uuid({ message: 'Érvénytelen azonosító.' });
+export const UuidInput = z.string().uuid({ message: 'Érvénytelen azonosító.' });
 
 export const SetPassInput = z.object({
   pass: passCheck,
@@ -29,8 +29,6 @@ export const ForgotPassInput = z.object({
   email: emailCheck,
 });
 
-export const postInput = z.object({
+export const PostInput = z.object({
   text: z.string().min(1, { message: 'A megosztott gondolat ne legyen üres!' }),
 });
-
-export const postIdInput = z.string().uuid({ message: 'Érvénytelen postId.' });

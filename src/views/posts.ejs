@@ -1,26 +1,35 @@
 <%- include('header') %>
+
 <% if (typeof user !== 'undefined') { %>
-  <h1 class="h3 mb-3 fw-normal"><%= user %></h1>
+<h1 class="h3 mb-3 fw-normal"><%= user %></h1>
 <%} %>
-<% if (typeof myPosts !== 'undefined' && myPosts) { %>
-  <h1 class="h3 mb-3 fw-normal">Kikukorékolt gondolataim</h1>
+<% if (typeof myposts !== 'undefined' && myposts) { %>
+<h1 class="h3 mb-3 fw-normal">Kikukorékolt gondolataim</h1>
 <%} %>
-<% if (typeof me !== 'undefined' && typeof user === 'undefined' && typeof myPosts === 'undefined') { %>
-  <form action="/post" method="post">
-    <div class="form-floating">
-      <textarea class="form-control" placeholder="Gondolatok" id="post" name="post" style="height: 100px"></textarea>
-      <label for="floatingTextarea2">Gondolataim a nagyvilágnak</label>
-    </div>
-    <div style="text-align: right;">
-      <button class="btn btn-outline-primary my-2" type="submit">
-        Kikukorékolom
-      </button>
-    </div>
-  </form>
-<%} %>
-<% if (typeof posts !== 'undefined') { %>
-  <% posts.forEach(post => { %>
-    <%- include('post', {post, myPost: typeof myPosts !== 'undefined' && myPosts}) %>
-  <% }) %>
+<% if (typeof errors !== 'undefined') { %>
+<%- include('errorMessages', {errors}) %>
 <% } %>
+<% if (typeof me !== 'undefined' && typeof user === 'undefined' && typeof myposts === 'undefined') { %>
+<form action="/post" method="post">
+  <div class="form-floating">
+    <textarea class="form-control" placeholder="Gondolatok" id="text" name="text" style="height: 100px"></textarea>
+    <label for="floatingTextarea2">Gondolataim a nagyvilágnak</label>
+  </div>
+  <div style="text-align: right;">
+    <button class="btn btn-outline-primary my-2" type="submit">
+      Kikukorékolom
+    </button>
+  </div>
+</form>
+<%} %>
+
+<% if (typeof posts !== 'undefined') { %>
+<% posts.forEach(post => { %>
+<%- include('post', {post, edit: typeof myposts !== 'undefined' && myposts, loggedIn: typeof me !== 'undefined'}) %>
+<% }) %>
+<% if (posts.length === 0) { %>
+<p>Még nem kukorékolt senki. Legyél te az első!<%= typeof me === 'undefined' ? ' (Hozzászóláshoz be kell jelentkezni.)' : '' %></p>
+<% } %>
+<% } %>
+
 <%- include('footer') %>
