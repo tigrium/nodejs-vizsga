@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 export const initProcessEnv = () => {
   const { error } = dotenv.config();
@@ -7,18 +7,10 @@ export const initProcessEnv = () => {
   }
 };
 
-function getProcessEnv<T>(
-  key: string,
-  parser: (value: string) => T,
-  defaultValue?: T
-): T;
+function getProcessEnv<T>(key: string, parser: (value: string) => T, defaultValue?: T): T;
 function getProcessEnv(key: string): string;
 function getProcessEnv(key: string, defaultValue?: any): string;
-function getProcessEnv(
-  key: string,
-  parser?: (value: string) => any,
-  defaultValue?: any
-): any {
+function getProcessEnv(key: string, parser?: (value: string) => any, defaultValue?: any): any {
   const value = process.env[key];
   if (!value) {
     if (defaultValue !== undefined) {

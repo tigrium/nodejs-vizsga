@@ -1,4 +1,4 @@
-import { Express } from "express";
+import { Express } from 'express';
 import {
   authMW,
   checkForgotPassMW,
@@ -24,170 +24,132 @@ import {
   setPassMW,
   setUserDataMW,
   signupUserMW,
-} from "../middlewares";
-import { KukoriDb } from "../service/db";
+} from '../middlewares';
+import { KukoriDb } from '../service/db';
 
 export const addRoutes = (app: Express, db: KukoriDb) => {
   const objectRepository = { db };
 
   app.use(sessionCheckMW(objectRepository));
 
-  app.get(
-    "/signup",
-    noauthMW(objectRepository, "/signup"),
-    renderMW(objectRepository, "signup")
-  );
+  app.get('/signup', noauthMW(objectRepository, '/signup'), renderMW(objectRepository, 'signup'));
 
   app.post(
-    "/signup",
+    '/signup',
     noauthMW(objectRepository),
     checkNewPassMW(objectRepository),
     signupUserMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/login"),
+    redirectMW(objectRepository, '/login'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, "signup")
+    renderMW(objectRepository, 'signup'),
   );
 
-  app.get(
-    "/login",
-    noauthMW(objectRepository),
-    renderMW(objectRepository, "login")
-  );
+  app.get('/login', noauthMW(objectRepository), renderMW(objectRepository, 'login'));
 
   app.post(
-    "/login",
+    '/login',
     noauthMW(objectRepository),
     loginUserMW(objectRepository),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, "login")
+    renderMW(objectRepository, 'login'),
   );
 
   app.get(
-    "/forgotpass/:secret",
+    '/forgotpass/:secret',
     noauthMW(objectRepository),
     checkForgotPassMW(objectRepository),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, "forgotpass")
+    renderMW(objectRepository, 'forgotpass'),
   );
 
   app.post(
-    "/forgotpass/:secret",
+    '/forgotpass/:secret',
     noauthMW(objectRepository),
     checkNewPassMW(objectRepository),
     checkForgotPassMW(objectRepository),
     setPassMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/"),
+    redirectMW(objectRepository, '/'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, "forgotpass")
+    renderMW(objectRepository, 'forgotpass'),
   );
 
-  app.get(
-    "/forgotpass",
-    noauthMW(objectRepository),
-    renderMW(objectRepository, "forgotpass")
-  );
+  app.get('/forgotpass', noauthMW(objectRepository), renderMW(objectRepository, 'forgotpass'));
 
   app.post(
-    "/forgotpass",
+    '/forgotpass',
     noauthMW(objectRepository),
     createPassRequestMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/")
+    redirectMW(objectRepository, '/'),
   );
 
-  app.get(
-    "/profile",
-    authMW(objectRepository),
-    renderMW(objectRepository, "profile")
-  );
+  app.get('/profile', authMW(objectRepository), renderMW(objectRepository, 'profile'));
 
   app.post(
-    "/profile",
+    '/profile',
     authMW(objectRepository),
     checkNewPassMW(objectRepository),
     setUserDataMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/profile"),
+    redirectMW(objectRepository, '/profile'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, "profile")
+    renderMW(objectRepository, 'profile'),
   );
 
-  app.post(
-    "/logout",
-    authMW(objectRepository),
-    noauthMW(objectRepository, "/")
-  );
+  app.post('/logout', authMW(objectRepository), noauthMW(objectRepository, '/'));
 
   app.post(
-    "/post",
+    '/post',
     authMW(objectRepository),
     postMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/")
+    redirectMW(objectRepository, '/'),
   );
 
   app.post(
-    "/repost/:postId",
+    '/repost/:postId',
     authMW(objectRepository),
     repostMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/")
+    redirectMW(objectRepository, '/'),
   );
 
-  app.get(
-    "/my-posts",
-    authMW(objectRepository),
-    getMyPostsMW(objectRepository),
-    renderMW(objectRepository, "posts")
-  );
+  app.get('/my-posts', authMW(objectRepository), getMyPostsMW(objectRepository), renderMW(objectRepository, 'posts'));
 
   app.post(
-    "/remove-post/:postId",
+    '/remove-post/:postId',
     authMW(objectRepository),
     getMyPostMW(objectRepository),
     removePostMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/my-posts")
+    redirectMW(objectRepository, '/my-posts'),
   );
 
   app.get(
-    "/edit-post/:postId",
+    '/edit-post/:postId',
     authMW(objectRepository),
     getMyPostMW(objectRepository),
-    renderMW(objectRepository, "editPost")
+    renderMW(objectRepository, 'editPost'),
   );
 
   app.post(
-    "/edit-post/:postId",
+    '/edit-post/:postId',
     authMW(objectRepository),
     getMyPostMW(objectRepository),
     editPostMW(objectRepository),
     saveDbMW(objectRepository),
-    redirectMW(objectRepository, "/my-posts")
+    redirectMW(objectRepository, '/my-posts'),
   );
 
-  app.get(
-    "/users",
-    getUsersMW(objectRepository),
-    renderMW(objectRepository, "users")
-  );
+  app.get('/users', getUsersMW(objectRepository), renderMW(objectRepository, 'users'));
 
-  app.get(
-    "/posts/:userId",
-    getPostsByUserMW(objectRepository),
-    renderMW(objectRepository, "posts")
-  );
+  app.get('/posts/:userId', getPostsByUserMW(objectRepository), renderMW(objectRepository, 'posts'));
 
-  app.get(
-    "/",
-    getUsersMW(objectRepository),
-    getPostsMW(objectRepository),
-    renderMW(objectRepository, "posts")
-  );
+  app.get('/', getUsersMW(objectRepository), getPostsMW(objectRepository), renderMW(objectRepository, 'posts'));
 
-  app.get("*", redirectMW(objectRepository, "/"));
+  app.get('*', redirectMW(objectRepository, '/'));
 
   app.use(errorHandlerMW(objectRepository));
 };

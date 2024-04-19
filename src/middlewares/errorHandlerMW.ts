@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../service/types";
+import { NextFunction, Request, Response } from 'express';
+import { ObjectRepository } from '../service/types';
 
 /**
  * A route lista végén elkapja a hibákat, logolja a hibaüzenetet, hibaoldalt renderel.
  */
 export const errorHandlerMW =
-  (objectRepo: ObjectRepository) =>
-  (err: Error, req: Request, res: Response, next: NextFunction) => {
+  (objectRepo: ObjectRepository) => (err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(err);
     next();
   };

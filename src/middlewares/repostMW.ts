@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../service/types";
+import { NextFunction, Request, Response } from 'express';
+import { ObjectRepository } from '../service/types';
 
 /**
  * A paraméterben kapott `:postId`-t menti az üzenetek közé.

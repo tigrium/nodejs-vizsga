@@ -1,22 +1,18 @@
-import { getProcessEnv } from "../service/processEnv";
-import { Express } from "express";
-import session, { SessionOptions } from "express-session";
+import { getProcessEnv } from '../service/processEnv';
+import { Express } from 'express';
+import session, { SessionOptions } from 'express-session';
 
 export const getSessionMW = (app: Express) => {
-  const isProduction = getProcessEnv(
-    "PROD",
-    (v) => Boolean(v),
-    false
-  );
+  const isProduction = getProcessEnv('PROD', (v) => Boolean(v), false);
 
   const sessionOptions: SessionOptions = {
-    secret: getProcessEnv("COOKIE_SECRET"),
-    name: isProduction ? "__Host-Session" : "Session",
+    secret: getProcessEnv('COOKIE_SECRET'),
+    name: isProduction ? '__Host-Session' : 'Session',
     cookie: {
-      path: "/",
+      path: '/',
       httpOnly: true,
       secure: isProduction,
-      sameSite: "lax",
+      sameSite: 'lax',
     },
     rolling: true,
     resave: false,
@@ -24,7 +20,7 @@ export const getSessionMW = (app: Express) => {
   };
 
   if (isProduction) {
-    app.set("trust proxy", 1);
+    app.set('trust proxy', 1);
   }
 
   return session(sessionOptions);

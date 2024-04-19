@@ -13,14 +13,14 @@ export type OriginalPost = {
   userId: string;
   text: string;
   ts: number;
-}
+};
 
 export type RePost = {
   id: string;
   userId: string;
   postId: string;
   ts: number;
-}
+};
 
 export type Post = OriginalPost | RePost;
 
@@ -28,4 +28,4 @@ export type ForgotPass = {
   userId: string;
   secret: string;
   valid: number;
-}
+};

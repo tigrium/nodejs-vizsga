@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { ObjectRepository } from "../service/types";
+import { NextFunction, Request, Response } from 'express';
+import { ObjectRepository } from '../service/types';
 
 /**
  * A `locals.mypost` bejegyzést a kapott adatokkal módosítja.

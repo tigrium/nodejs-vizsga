@@ -1,5 +1,5 @@
-import Loki from "lokijs";
-import { ForgotPass, Post, User } from "./models";
+import Loki, { Collection } from 'lokijs';
+import { ForgotPass, Post, User } from './models';
 
 export type KukoriDb = {
   database: Loki;
@@ -12,41 +12,37 @@ export type KukoriDb = {
 
 export const initDatabase = (): Promise<KukoriDb> => {
   return new Promise((resolve, reject) => {
-    const database = new Loki("kukori.db");
+    const database = new Loki('kukori.db');
     database.loadDatabase({}, (err) => {
       if (err) {
         reject(err);
       }
-      let postModel = database.getCollection<Post>("posts");
+      let postModel = database.getCollection<Post>('posts');
       if (postModel === null) {
-        postModel = database.addCollection<Post>("posts", {
-          indices: ["id", "ts"],
-          unique: ["id"],
+        postModel = database.addCollection<Post>('posts', {
+          indices: ['id', 'ts'],
+          unique: ['id'],
         });
       }
-      let userModel = database.getCollection<User>("users");
+      let userModel = database.getCollection<User>('users');
       if (userModel === null) {
-        userModel = database.addCollection<User>("users", {
-          indices: ["id"],
-          unique: ["id", "email"],
+        userModel = database.addCollection<User>('users', {
+          indices: ['id'],
+          unique: ['id', 'email'],
         });
       }
-      let forgotPassModel =
-        database.getCollection<ForgotPass>("forgotpass");
+      let forgotPassModel = database.getCollection<ForgotPass>('forgotpass');
       if (forgotPassModel === null) {
-        forgotPassModel = database.addCollection<ForgotPass>(
-          "forgotpass",
-          {
-            indices: ["secret"],
-            unique: ["secret"],
-          }
-        );
+        forgotPassModel = database.addCollection<ForgotPass>('forgotpass', {
+          indices: ['secret'],
+          unique: ['secret'],
+        });
       }
       database.saveDatabase((err) => {
         if (err) {
           reject(err);
         }
-        console.log("Database saved after init.");
+        console.log('Database saved after init.');
         // console.table(userModel.find());
         // console.table(postModel.find());
         // console.table(forgotPassModel.find());

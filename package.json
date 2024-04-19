@@ -9,7 +9,9 @@
     "dev": "nodemon --config nodemon.json src/index.ts",
     "copyEjs": "copyfiles  -u 1 src/views/* dist/",
     "buildCss": "sass src/scss/theme.scss public/theme.css",
-    "postbuild": "npm run copyEjs && npm run buildCss"
+    "postbuild": "npm run copyEjs && npm run buildCss",
+    "prettify": "prettier --write src/**/*.ts",
+    "lint": "eslint src/**/*.ts"
   },
   "author": "",
   "license": "ISC",
@@ -28,8 +30,17 @@
     "@types/express": "^4.17.21",
     "@types/lokijs": "^1.5.14",
     "@types/node": "^20.12.5",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
     "copyfiles": "^2.4.1",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "^5.0.0",
     "nodemon": "^3.1.0",
+    "prettier": "3.2.5",
     "sass": "^1.75.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4"
