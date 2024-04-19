@@ -6,5 +6,6 @@ import { ObjectRepository } from '../service/types';
  */
 export const redirectMW =
   (objectRepo: ObjectRepository, redirectPath: string) => (req: Request, res: Response, next: NextFunction) => {
+    console.log('redirectMW', redirectPath);
     res.redirect(redirectPath);
   };

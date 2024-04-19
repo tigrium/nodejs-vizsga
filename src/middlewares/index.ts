@@ -4,7 +4,6 @@ export { noauthMW } from './noauthMW';
 export { checkNewPassMW } from './checkNewPassMW';
 export { mistakeHandlerMW } from './mistakeHandlerMW';
 export { signupUserMW } from './signupUserMW';
-export { saveDbMW } from './saveDbMW';
 export { loginUserMW } from './loginUserMW';
 export { checkForgotPassMW } from './checkForgotPassMW';
 export { setPassMW } from './setPassMW';

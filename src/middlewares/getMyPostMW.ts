@@ -6,6 +6,7 @@ import { ObjectRepository, PostToRender } from '../service/types';
  * (Ha nem saját vagy nem létező post, hibát dob, amit külön nem kezel, csak a végén.)
  */
 export const getMyPostMW = (objectRepo: ObjectRepository) => (req: Request, res: Response, next: NextFunction) => {
+  console.log('getMyPostMW');
   const myPost: PostToRender = {
     id: 'abcdef',
     text: 'Maecenas dignissim molestie velit, eu sollicitudin nisl eleifend eu. Vivamus vel lobortis purus. Nam vitae neque quam. Cras dictum, diam quis cursus faucibus, tellus tellus viverra diam, ut pretium massa.',

@@ -1,13 +1,13 @@
 <%- include('header') %>
 <h1 class="h3 mb-3 fw-normal">Szerkesztés</h1>
 <% if (typeof myPost !== 'undefined') { %>
-  <form>
+  <form action="/edit-post/:postId" method="post">
     <textarea class="form-control" id="post" name="post" style="height: 100px"></textarea>
     <button class="btn btn-outline-primary my-2" type="submit">
       Mehet
     </button>
   </form>
-  <form>
+  <form action="/remove-post/:postId" method="post">
     <button class="btn btn-outline-danger btn-sm mt-4" type="submit">
       Törlés
     </button>

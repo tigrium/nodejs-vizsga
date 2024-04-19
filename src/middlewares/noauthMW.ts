@@ -7,7 +7,13 @@ import { ObjectRepository } from '../service/types';
  */
 export const noauthMW =
   (objectRepo: ObjectRepository, redirectPath?: string) => (req: Request, res: Response, next: NextFunction) => {
-    // session destroy...
-    // res.redirect(redirectPath ?? req.path);
+    if (res.locals.me) {
+      return req.session.destroy((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect(redirectPath ?? req.path);
+      });
+    }
     next();
   };

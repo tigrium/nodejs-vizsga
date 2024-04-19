@@ -5,6 +5,7 @@ import { ObjectRepository, PostToRender } from '../service/types';
  * A bejelentkezett (`locals.me`) felhasználó bejegyzéseit menti a `locals.myposts` értékbe.
  */
 export const getMyPostsMW = (objectRepo: ObjectRepository) => (req: Request, res: Response, next: NextFunction) => {
+  console.log('getMyPostsMW');
   const posts: PostToRender[] = [
     {
       id: 'abcdef',

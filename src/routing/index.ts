@@ -1,4 +1,6 @@
 import { Express } from 'express';
+import { v4 as uuid } from 'uuid';
+
 import {
   authMW,
   checkForgotPassMW,
@@ -19,7 +21,6 @@ import {
   removePostMW,
   renderMW,
   repostMW,
-  saveDbMW,
   sessionCheckMW,
   setPassMW,
   setUserDataMW,
@@ -28,7 +29,7 @@ import {
 import { KukoriDb } from '../service/db';
 
 export const addRoutes = (app: Express, db: KukoriDb) => {
-  const objectRepository = { db };
+  const objectRepository = { db, uuid };
 
   app.use(sessionCheckMW(objectRepository));
 
@@ -39,7 +40,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     noauthMW(objectRepository),
     checkNewPassMW(objectRepository),
     signupUserMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/login'),
     mistakeHandlerMW(objectRepository),
     renderMW(objectRepository, 'signup'),
@@ -66,10 +66,9 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
   app.post(
     '/forgotpass/:secret',
     noauthMW(objectRepository),
-    checkNewPassMW(objectRepository),
     checkForgotPassMW(objectRepository),
+    checkNewPassMW(objectRepository),
     setPassMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/'),
     mistakeHandlerMW(objectRepository),
     renderMW(objectRepository, 'forgotpass'),
@@ -81,8 +80,9 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     '/forgotpass',
     noauthMW(objectRepository),
     createPassRequestMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/'),
+    mistakeHandlerMW(objectRepository),
+    renderMW(objectRepository, 'forgotpass'),
   );
 
   app.get('/profile', authMW(objectRepository), renderMW(objectRepository, 'profile'));
@@ -92,7 +92,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     authMW(objectRepository),
     checkNewPassMW(objectRepository),
     setUserDataMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/profile'),
     mistakeHandlerMW(objectRepository),
     renderMW(objectRepository, 'profile'),
@@ -104,7 +103,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     '/post',
     authMW(objectRepository),
     postMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/'),
   );
 
@@ -112,7 +110,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     '/repost/:postId',
     authMW(objectRepository),
     repostMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/'),
   );
 
@@ -123,7 +120,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     authMW(objectRepository),
     getMyPostMW(objectRepository),
     removePostMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/my-posts'),
   );
 
@@ -139,7 +135,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     authMW(objectRepository),
     getMyPostMW(objectRepository),
     editPostMW(objectRepository),
-    saveDbMW(objectRepository),
     redirectMW(objectRepository, '/my-posts'),
   );
 

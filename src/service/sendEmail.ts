@@ -4,6 +4,6 @@ type EmailParams = {
   message: string;
 };
 
-export const sendEmail = (params: EmailParams) => {
+export const sendEmail = async (params: EmailParams) => {
   console.log(params);
 };

@@ -32,6 +32,7 @@ export const getPostsMW = (objectRepo: ObjectRepository) => (req: Request, res: 
  * de az egyes bejegyzésekhez nem fűz hozzá szerző felhasználót. A listát a `locals.posts` értékbe menti.
  */
 export const getPostsByUserMW = (objectRepo: ObjectRepository) => (req: Request, res: Response, next: NextFunction) => {
+  console.log('getPostsByUserMW');
   const posts: PostToRender[] = [
     {
       id: 'abcdef',

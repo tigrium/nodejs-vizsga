@@ -1,22 +1,17 @@
 <%- include('header') %>
 
 <main class="container m-auto my-5" style="max-width: 500px">
-  <form>
+  <form action="/signup" method="post">
     <h1 class="h3 mb-3 fw-normal">Regisztráció</h1>
 
-    <p class="text-danger">Hibaüzenet itt jelenik meg.</p>
+    <% if (typeof errors !=='undefined' ) { %>
+    <%- include('errorMessages', {errors}) %>
+    <% } %>
 
     <div class="input-group mb-3 my-2">
-      <span class="input-group-text"
-        ><i class="bi bi-envelope-at"></i
-      ></span>
+      <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
       <div class="form-floating">
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          placeholder="name@example.com"
-        />
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="<%= typeof email === 'string' ? email : '' %>" />
         <label for="email">E-mail cím</label>
       </div>
     </div>
@@ -24,12 +19,7 @@
     <div class="input-group mb-3 my-2">
       <span class="input-group-text"><i class="bi bi-key"></i></span>
       <div class="form-floating">
-        <input
-          type="password"
-          class="form-control"
-          id="pass"
-          placeholder="Password"
-        />
+        <input type="password" class="form-control" id="pass" name="pass" placeholder="Password" value="<%= typeof pass === 'string' ? pass : '' %>" />
         <label for="pass">Jelszó</label>
       </div>
     </div>
@@ -37,42 +27,25 @@
     <div class="input-group mb-3 my-2">
       <span class="input-group-text"><i class="bi bi-key"></i></span>
       <div class="form-floating">
-        <input
-          type="password"
-          class="form-control"
-          id="passAgain"
-          placeholder="Password"
-        />
+        <input type="password" class="form-control" id="passAgain" name="passAgain" placeholder="Password" value="<%= typeof passAgain === 'string' ? passAgain : '' %>" />
         <label for="passAgain">Jelszó újra</label>
       </div>
     </div>
 
     <div class="input-group mb-3 my-2">
-      <span class="input-group-text"
-        ><i class="bi bi-person-vcard"></i
-      ></span>
+      <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
       <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          name="name"
-          placeholder="Név"
-        />
+        <input type="text" class="form-control" id="name" name="name" placeholder="Név" value="<%= typeof name === 'string' ? name : '' %>" />
         <label for="name">Megjelenítendő név</label>
       </div>
     </div>
 
-    <button class="btn btn-primary w-100 py-2 my-2" type="submit">
-      Regisztráció
-    </button>
-
-    <div>Már regisztráltam</div>
-
-    <a href="/login" class="btn btn-outline-primary my-2 w-100 py-2">
-      Bejelentkezés
-    </a>
+    <button class="btn btn-primary w-100 py-2 my-2" type="submit">Regisztráció</button>
   </form>
+
+  <div>Már regisztráltam</div>
+
+  <a href="/login" class="btn btn-outline-primary my-2 w-100 py-2"> Bejelentkezés </a>
 </main>
 
 <%- include('footer') %>

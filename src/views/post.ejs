@@ -25,7 +25,7 @@
   <% } %>
   <div class="d-flex flex-direction-row justify-content-end">
     <% if (typeof myPost !== 'undefined' && myPost) { %>
-      <form>
+      <form action="/remove-post/:postId" method="post">
         <button class="btn btn-link link-danger text-decoration-none">
           Törlés
         </button>
