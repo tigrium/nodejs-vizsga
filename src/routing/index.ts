@@ -107,12 +107,7 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     renderMW(objectRepository, 'posts'),
   );
 
-  app.post(
-    '/repost/:postId',
-    authMW(objectRepository),
-    repostMW(objectRepository),
-    redirectMW(objectRepository, '/'),
-  );
+  app.post('/repost/:postId', authMW(objectRepository), repostMW(objectRepository), redirectMW(objectRepository, '/'));
 
   app.get('/my-posts', authMW(objectRepository), getMyPostsMW(objectRepository), renderMW(objectRepository, 'posts'));
 

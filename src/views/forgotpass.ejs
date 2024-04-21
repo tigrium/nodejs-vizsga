@@ -1,21 +1,22 @@
 <%- include('header') %>
 
 <main class="container m-auto my-5" style="max-width: 500px">
-  <form method="post">
-    <h1 class="h3 mb-3 fw-normal">Elfelejtett jelszó</h1>
+  <h1 class="h3 mb-3 fw-normal">Elfelejtett jelszó</h1>
 
-    <% if (typeof errors !== 'undefined') { %>
-    <%- include('errorMessages', {errors}) %>
-    <% } %>
+  <% if (typeof errors !== 'undefined') { %>
+  <%- include('errorMessages', {errors}) %>
+  <% } %>
 
-    <% if (typeof ok !== 'undefined' && !ok) { %>
-    <p class="text-warning">
-      Ez a link nem érvényes. Lejárt vagy már felhasználták.
-    </p>
-    <p>Új jelszóvisszaállítás kérése:</p>
-    <% } %>
+  <% if (typeof ok !== 'undefined' && !ok) { %>
+  <p class="text-warning">
+    Ez a link nem érvényes. Lejárt vagy már felhasználták.
+  </p>
+  <p>Új jelszóvisszaállítás kérése:</p>
+  <% } %>
 
-    <% if (typeof ok === 'undefined' || !ok) { %>
+  <% if (typeof ok === 'undefined' || !ok) { %>
+
+  <form action="/forgotpass" method="post">
     <div class="input-group mb-3 my-2">
       <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-at"></i></span>
       <div class="form-floating">
@@ -23,7 +24,14 @@
         <label for="email">E-mail cím</label>
       </div>
     </div>
-    <% } else if (ok) { %>
+    
+    <button class="btn btn-primary w-100 py-2 my-2" type="submit">
+      Mehet
+    </button>
+  </form>
+  <% } else if (ok) { %>
+
+  <form method="post">
     <div class="input-group mb-3 my-2">
       <span class="input-group-text"><i class="bi bi-key"></i></span>
       <div class="form-floating">
@@ -39,12 +47,12 @@
         <label for="passAgain">Jelszó újra</label>
       </div>
     </div>
-    <% } %>
 
     <button class="btn btn-primary w-100 py-2 my-2" type="submit">
       Mehet
     </button>
   </form>
+  <% } %>
 
   <a href="/" class="link-primary text-decoration-none my-2">Vissza a főoldalra</a>
 </main>

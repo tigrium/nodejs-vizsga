@@ -27,6 +27,7 @@ export const checkForgotPassMW =
       try {
         objectRepo.db.models.forgotPassModel.remove(forgotPass);
         objectRepo.db.database.save();
+        return next();
       } catch (err) {
         return next(err);
       }
