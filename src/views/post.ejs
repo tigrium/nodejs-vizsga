@@ -6,7 +6,7 @@
   </div>
   <div class="card-body">
     <p style="white-space: pre-line"><%= post.text %></p>
-    <% if (typeof post.original !== 'undefined') { %>
+    <% if (typeof post.original !== 'undefined' && post.original !== null) { %>
     <footer class="blockquote-footer">
       <%= post.original.user %>&nbsp;<span class="fw-lighter" style="font-size: 80%;">(<%= post.original.ts %>)</span>
     </footer>

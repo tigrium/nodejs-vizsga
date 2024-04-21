@@ -112,16 +112,16 @@ export class PostResolver {
       return null;
     }
 
-    const originalPost = this.postModel.findOne({ id: (post as RePost).postId }) as OriginalPost;
-    if (!originalPost) {
-      throw new Error('Post nem található.');
-    }
+    const originalPost = this.postModel.findOne({ id: (post as RePost).postId }) as OriginalPost | undefined;
+    // if (!originalPost) {
+    //   throw new Error('Post nem található.');
+    // }
 
     const { id, userId, ts } = post;
-    const original = this.userAndTs(originalPost);
+    const original = originalPost ? this.userAndTs(originalPost) : null;
     const toRender: PostToRender = {
       id,
-      text: originalPost.text,
+      text: originalPost?.text ?? '>>> Visszavont gondolat újrakukorékolása. <<<',
       ts: formatTs(ts),
       original,
     };

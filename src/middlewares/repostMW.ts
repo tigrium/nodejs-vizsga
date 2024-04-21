@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { MistakeError, ObjectRepository } from '../service/types';
 import { inputCheck } from '../service/inputCheck';
 import { UuidInput } from '../service/inputSchemas';
-import { Post } from '../service/models';
+import { Post, RePost } from '../service/models';
 
 /**
  * A paraméterben kapott `:postId`-t menti az üzenetek közé.
@@ -13,9 +13,15 @@ export const repostMW = (objectRepo: ObjectRepository) => async (req: Request, r
     return next(new MistakeError(mistakes));
   }
 
+  const repost = objectRepo.db.models.postModel.findOne({ id: req.params.postId });
+
+  if (!repost) {
+    return next(new MistakeError('Bejegyzés nem található.'));
+  }
+
   const post: Post = {
     id: objectRepo.uuid(),
-    postId: req.params.postId,
+    postId: Object.keys(repost).includes('postId') ? (repost as RePost).postId : repost.id,
     userId: res.locals.me.id as string,
     ts: new Date().getTime(),
   };
