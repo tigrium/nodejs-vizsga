@@ -9,13 +9,9 @@ import { inputCheck } from '../service/inputCheck';
  */
 export const getPostsMW = (objectRepo: ObjectRepository) => (req: Request, res: Response, next: NextFunction) => {
   try {
-    const postResolver = new PostResolver(
-      objectRepo.db.models.postModel.find().sort((a, b) => (a.ts > b.ts ? -1 : 1)),
-      objectRepo.db.models.postModel,
-      objectRepo.db.models.userModel,
-    );
+    const postResolver = new PostResolver(objectRepo.db.models.postModel, objectRepo.db.models.userModel);
 
-    const posts = postResolver.getPosts();
+    const posts = postResolver.getPosts(objectRepo.db.models.postModel.find().sort((a, b) => (a.ts > b.ts ? -1 : 1)));
 
     res.locals.posts = posts;
     next();
@@ -35,13 +31,13 @@ export const getPostsByUserMW =
       next(new MistakeError(mistakes));
     }
     try {
-      const postResolver = new PostResolver(
-        objectRepo.db.models.postModel.find({ userId: req.params.userId }).sort((a, b) => (a.ts > b.ts ? -1 : 1)),
-        objectRepo.db.models.postModel,
-        objectRepo.db.models.userModel,
-      );
+      const postResolver = new PostResolver(objectRepo.db.models.postModel, objectRepo.db.models.userModel);
 
-      const { posts, user } = postResolver.getPostsByUser(req.params.userId);
+      const user = postResolver.getName(req.params.userId);
+      const posts = postResolver.getPosts(
+        objectRepo.db.models.postModel.find({ userId: req.params.userId }).sort((a, b) => (a.ts > b.ts ? -1 : 1)),
+        true,
+      );
 
       res.locals.user = user;
       res.locals.posts = posts;

@@ -76,12 +76,10 @@ export class UserNameResolver {
 }
 
 export class PostResolver {
-  private posts: Post[];
   private postModel: Collection<Post>;
   private nameResolver: UserNameResolver;
 
-  constructor(posts: Post[], postModel: Collection<Post>, userModel: Collection<User>) {
-    this.posts = posts;
+  constructor(postModel: Collection<Post>, userModel: Collection<User>) {
     this.postModel = postModel;
     this.nameResolver = new UserNameResolver(userModel);
   }
@@ -133,14 +131,13 @@ export class PostResolver {
     return toRender;
   }
 
-  getPosts(): PostToRender[] {
-    return this.posts.map((post) => this.originalPost(post) ?? (this.rePost(post) as PostToRender));
+  getPosts(posts: Post[], withoutUser?: boolean): PostToRender[] {
+    return posts.map(
+      (post) => this.originalPost(post, withoutUser) ?? (this.rePost(post, withoutUser) as PostToRender),
+    );
   }
 
-  getPostsByUser(userId: string): { user: string; posts: PostToRender[] } {
-    return {
-      user: this.nameResolver.getName(userId),
-      posts: this.posts.map((post) => this.originalPost(post, true) ?? (this.rePost(post, true) as PostToRender)),
-    };
+  getName(userId: string) {
+    return this.nameResolver.getName(userId);
   }
 }
