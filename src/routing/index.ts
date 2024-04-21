@@ -90,7 +90,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
   app.post(
     '/profile',
     authMW(objectRepository),
-    checkNewPassMW(objectRepository),
     setUserDataMW(objectRepository),
     redirectMW(objectRepository, '/profile'),
     mistakeHandlerMW(objectRepository),

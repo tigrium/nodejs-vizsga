@@ -3,13 +3,13 @@
 <% if (typeof user !== 'undefined') { %>
 <h1 class="h3 mb-3 fw-normal"><%= user %></h1>
 <%} %>
-<% if (typeof myposts !== 'undefined' && myposts) { %>
+<% if (typeof myPosts !== 'undefined' && myPosts) { %>
 <h1 class="h3 mb-3 fw-normal">Kikukorékolt gondolataim</h1>
 <%} %>
 <% if (typeof errors !== 'undefined') { %>
 <%- include('errorMessages', {errors}) %>
 <% } %>
-<% if (typeof me !== 'undefined' && typeof user === 'undefined' && typeof myposts === 'undefined') { %>
+<% if (typeof me !== 'undefined' && typeof user === 'undefined' && typeof myPosts === 'undefined') { %>
 <form action="/post" method="post">
   <div class="form-floating">
     <textarea class="form-control" placeholder="Gondolatok" id="text" name="text" style="height: 100px"></textarea>
@@ -25,7 +25,7 @@
 
 <% if (typeof posts !== 'undefined') { %>
 <% posts.forEach(post => { %>
-<%- include('post', {post, edit: typeof myposts !== 'undefined' && myposts, loggedIn: typeof me !== 'undefined'}) %>
+<%- include('post', {post, edit: typeof myPosts !== 'undefined' && myPosts, loggedIn: typeof me !== 'undefined'}) %>
 <% }) %>
 <% if (posts.length === 0) { %>
 <p>Még nem kukorékolt senki. Legyél te az első!<%= typeof me === 'undefined' ? ' (Hozzászóláshoz be kell jelentkezni.)' : '' %></p>

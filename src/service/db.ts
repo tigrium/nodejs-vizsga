@@ -44,13 +44,6 @@ export const initDatabase = (): Promise<KukoriDb> => {
         if (err) {
           reject(err);
         }
-        console.log('Database saved after init.');
-        console.log('users:');
-        console.table(userModel.find());
-        console.log('posts:');
-        console.table(postModel.find());
-        console.log('forgotpass:');
-        console.table(forgotPassModel.find());
         resolve({
           database,
           models: { postModel, userModel, forgotPassModel },
@@ -83,10 +76,12 @@ export class UserNameResolver {
 }
 
 export class PostResolver {
+  private posts: Post[];
   private postModel: Collection<Post>;
   private nameResolver: UserNameResolver;
 
-  constructor(postModel: Collection<Post>, userModel: Collection<User>) {
+  constructor(posts: Post[], postModel: Collection<Post>, userModel: Collection<User>) {
+    this.posts = posts;
     this.postModel = postModel;
     this.nameResolver = new UserNameResolver(userModel);
   }
@@ -139,19 +134,13 @@ export class PostResolver {
   }
 
   getPosts(): PostToRender[] {
-    return this.postModel
-      .find()
-      .sort((a, b) => (a.ts > b.ts ? -1 : 1))
-      .map((post) => this.originalPost(post) ?? (this.rePost(post) as PostToRender));
+    return this.posts.map((post) => this.originalPost(post) ?? (this.rePost(post) as PostToRender));
   }
 
   getPostsByUser(userId: string): { user: string; posts: PostToRender[] } {
     return {
       user: this.nameResolver.getName(userId),
-      posts: this.postModel
-        .find()
-        .sort((a, b) => (a.ts > b.ts ? -1 : 1))
-        .map((post) => this.originalPost(post, true) ?? (this.rePost(post, true) as PostToRender)),
+      posts: this.posts.map((post) => this.originalPost(post, true) ?? (this.rePost(post, true) as PostToRender)),
     };
   }
 }

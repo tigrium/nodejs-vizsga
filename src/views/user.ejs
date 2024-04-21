@@ -1,0 +1,5 @@
+<% if (typeof me !== 'undefined' && user.id === me.id) { %>
+<a href="/profile" class="list-group-item list-group-item-action d-flex justify-content-between"><%= user.name%> <span class="badge text-bg-light fw-light">én</span></a>
+<% } else { %>
+<a href="/posts/<%= user.id %>" class="list-group-item list-group-item-action"><%= user.name%></a>
+<% } %>

@@ -15,9 +15,11 @@
 </div>
 <div class="text-end">
   <% if ((typeof edit === 'undefined' || !edit) && loggedIn) { %>
-  <button class="btn btn-link link-primary text-decoration-none">
-    Ez tetszik, kikukorékolom!
-  </button>
+  <form action="/repost/<%= post.id %>" method="post">
+    <button class="btn btn-link link-primary text-decoration-none">
+      Ez tetszik, kikukorékolom!
+    </button>
+  </form>
   <% } %>
   <div class="d-flex flex-direction-row justify-content-end">
     <% if (typeof edit !== 'undefined' && edit) { %>

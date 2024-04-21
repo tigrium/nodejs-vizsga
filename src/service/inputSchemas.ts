@@ -13,6 +13,13 @@ export const ProfileInput = z.object({
     .min(MIN_NAME_LENGTH, { message: `A megjelenítendő név legyen legalább ${MIN_NAME_LENGTH} hosszú!` }),
 });
 
+export const ProfileInputWithoutPass = z.object({
+  email: emailCheck,
+  name: z
+    .string()
+    .min(MIN_NAME_LENGTH, { message: `A megjelenítendő név legyen legalább ${MIN_NAME_LENGTH} hosszú!` }),
+});
+
 export const LoginInput = z.object({
   email: emailCheck,
   pass: passCheck,
