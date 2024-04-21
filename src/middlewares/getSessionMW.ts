@@ -1,6 +1,8 @@
-import { getProcessEnv } from '../service/processEnv';
 import { Express } from 'express';
 import session, { SessionOptions } from 'express-session';
+
+import { getProcessEnv } from '../service/processEnv';
+import { LokiStore } from '../service/LokiStore';
 
 declare module 'express-session' {
   export interface SessionData {
@@ -12,6 +14,7 @@ export const getSessionMW = (app: Express) => {
   const isProduction = getProcessEnv('PROD', (v) => Boolean(v), false);
 
   const sessionOptions: SessionOptions = {
+    store: new LokiStore(),
     secret: getProcessEnv('COOKIE_SECRET'),
     name: isProduction ? '__Host-Session' : 'Session',
     cookie: {
