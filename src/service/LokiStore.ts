@@ -45,7 +45,7 @@ export class LokiStore extends Store {
     if (options.logErrors) {
       if (typeof options.logErrors !== 'function') {
         options.logErrors = function (err) {
-          console.error('Warning: connect-loki reported a client error: ' + err);
+          console.error('[Loki Store error]', err);
         };
       }
       this.logger = options.logErrors;
@@ -72,7 +72,7 @@ export class LokiStore extends Store {
 
   get(sid: string, callback: (err: any, session?: SessionData | null | undefined) => void): void {
     if (!this.collection) {
-      return callback(new Error('Session storage not found.'));
+      return callback(new Error('Loki session adatbázis nem található.'));
     }
     const s = this.collection.findOne({ sid });
     if (s?.content) {
@@ -85,7 +85,7 @@ export class LokiStore extends Store {
   set(sid: string, session: SessionData, callback?: ((err?: any) => void) | undefined): void {
     if (!this.collection) {
       if (callback) {
-        return callback(new Error('Session storage not found.'));
+        return callback(new Error('Loki session adatbázis nem található.'));
       }
       return;
     }
@@ -111,6 +111,42 @@ export class LokiStore extends Store {
     this.collection?.findAndRemove({ sid });
     if (callback) {
       callback(null);
+    }
+  }
+
+  clear(callback?: ((err?: any) => void) | undefined): void {
+    if (!this.collection) {
+      if (callback) {
+        return callback(new Error('Loki session adatbázis nem található.'));
+      }
+      return;
+    }
+    this.collection.clear();
+  }
+
+  length(callback: (err: any, length?: number | undefined) => void): void {
+    if (!this.collection) {
+      return callback(new Error('Loki session adatbázis nem található.'));
+    }
+    const c = this.collection.count();
+    callback(null, c);
+  }
+
+  touch(sid: string, session: SessionData, callback?: (() => void) | undefined): void {
+    if (!this.collection) {
+      if (callback) {
+        return callback();
+      }
+      return;
+    }
+    const s = this.collection.findOne({ sid });
+    if (s?.updatedAt) {
+      s.updatedAt = new Date();
+      this.collection.update(s);
+    }
+
+    if (callback) {
+      callback();
     }
   }
 }

@@ -5,5 +5,8 @@ type EmailParams = {
 };
 
 export const sendEmail = async (params: EmailParams) => {
-  console.log(params);
+  console.log('Címzett:', params.recipient);
+  console.log('Tárgy:', params.subject);
+  console.log('Üzenet:');
+  console.log(params.message);
 };

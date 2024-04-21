@@ -12,7 +12,7 @@ export const checkForgotPassMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.params.secret, UuidInput);
     if (mistakes.length > 0) {
-      next(new MistakeError(mistakes));
+      return next(new MistakeError(mistakes));
     }
 
     const forgotPass = objectRepo.db.models.forgotPassModel.findOne({ secret: req.params.secret });
@@ -34,5 +34,6 @@ export const checkForgotPassMW =
 
     res.locals.ok = true;
     res.locals.forgotPass = forgotPass;
+
     next();
   };

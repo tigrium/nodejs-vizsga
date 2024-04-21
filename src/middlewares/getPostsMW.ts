@@ -28,7 +28,7 @@ export const getPostsByUserMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.params.userId, UuidInput);
     if (mistakes.length > 0) {
-      next(new MistakeError(mistakes));
+      return next(new MistakeError(mistakes));
     }
     try {
       const postResolver = new PostResolver(objectRepo.db.models.postModel, objectRepo.db.models.userModel);

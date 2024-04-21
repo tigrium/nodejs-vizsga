@@ -11,7 +11,7 @@ export const getMyPostMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.params.postId, UuidInput);
     if (mistakes.length > 0) {
-      next(new MistakeError(mistakes));
+      return next(new MistakeError(mistakes));
     }
 
     const myPost = objectRepo.db.models.postModel.findOne({ id: req.params.postId, userId: res.locals.me.id });

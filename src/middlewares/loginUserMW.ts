@@ -13,7 +13,7 @@ export const loginUserMW =
   (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.body, LoginInput);
     if (mistakes.length > 0) {
-      next(new MistakeError(mistakes));
+      return next(new MistakeError(mistakes));
     }
 
     const user = objectRepo.db.models.userModel.findOne({ email: req.body.email });

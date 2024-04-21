@@ -10,7 +10,7 @@ import { Post } from '../service/models';
 export const repostMW = (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
   const mistakes = await inputCheck(req.params.postId, UuidInput);
   if (mistakes.length > 0) {
-    next(new MistakeError(mistakes));
+    return next(new MistakeError(mistakes));
   }
 
   const post: Post = {
