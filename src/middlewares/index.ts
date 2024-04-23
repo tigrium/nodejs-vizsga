@@ -1,7 +1,6 @@
 export { sessionCheckMW } from './sessionCheckMW';
 export { authMW } from './authMW';
 export { noauthMW } from './noauthMW';
-export { checkNewPassMW } from './checkNewPassMW';
 export { mistakeHandlerMW } from './mistakeHandlerMW';
 export { signupUserMW } from './signupUserMW';
 export { loginUserMW } from './loginUserMW';

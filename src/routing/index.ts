@@ -4,7 +4,6 @@ import { v4 as uuid } from 'uuid';
 import {
   authMW,
   checkForgotPassMW,
-  checkNewPassMW,
   createPassRequestMW,
   editPostMW,
   errorHandlerMW,
@@ -38,7 +37,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
   app.post(
     '/signup',
     noauthMW(objectRepository),
-    checkNewPassMW(objectRepository),
     signupUserMW(objectRepository),
     redirectMW(objectRepository, '/login'),
     mistakeHandlerMW(objectRepository),
@@ -67,7 +65,6 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
     '/forgotpass/:secret',
     noauthMW(objectRepository),
     checkForgotPassMW(objectRepository),
-    checkNewPassMW(objectRepository),
     setPassMW(objectRepository),
     redirectMW(objectRepository, '/'),
     mistakeHandlerMW(objectRepository),
