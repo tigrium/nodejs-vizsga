@@ -30,7 +30,7 @@
         <% if (typeof me === 'undefined') { %>
         <a href="/login" class="btn btn-link link-primary text-decoration-none">Bejelentkezés</a>
         <% } else { %>
-        <a href="/profile" class="btn btn-link link-primary text-decoration-none"><span class="d-none d-md-inline-block me-1"><%= me.name %></span><i class="bi bi-person"></i></a>
+        <a href="/profile" class="btn btn-link link-primary text-decoration-none"><span class="d-none d-md-inline-block me-1"><%= me.name %></span><%- include('profileIcon', {picturePath: me?.picturePath}) %></a>
         <% } %>
       </div>
     </div>

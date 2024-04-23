@@ -1,12 +1,20 @@
 <%- include('header') %>
 
 <main class="container m-auto my-5" style="max-width: 500px">
-  <form action="/profile" method="post">
+  <form action="/profile" method="post" enctype="multipart/form-data">
     <h1 class="h3 mb-3 fw-normal">Profilom</h1>
 
     <% if (typeof errors !== 'undefined') { %>
     <%- include('errorMessages', {errors}) %>
     <% } %>
+
+    <div style="text-align: center;">
+      <% if (typeof me.picturePath !== 'undefined') { %>
+      <img src="/<%= me.picturePath %>" alt="Profilkép" class="img-thumbnail object-fit-contain" style="width: 10em; height: 10em;" />
+      <% } else { %>
+      <i class="bi bi-person-bounding-box" style="font-size: 10em;"></i>
+      <% } %>
+    </div>
 
     <div class="input-group mb-3 my-2">
       <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
@@ -38,6 +46,11 @@
         <input type="text" class="form-control" id="name" name="name" placeholder="Név" value="<%= me.name %>" />
         <label for="name">Megjelenítendő név</label>
       </div>
+    </div>
+
+    <label>Profilkép módosítása:</label>
+    <div class="input-group mb-3 my-2">
+      <input type="file" class="form-control" id="picture" name="picture" />
     </div>
 
     <button class="btn btn-primary w-100 py-2 my-2" type="submit">

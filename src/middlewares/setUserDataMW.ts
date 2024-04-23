@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import fs from 'fs/promises';
+
 import { MistakeError, ObjectRepository } from '../service/types';
 import { inputCheck } from '../service/inputCheck';
 import { ProfileInput, ProfileInputWithoutPass } from '../service/inputSchemas';
@@ -33,6 +35,17 @@ export const setUserDataMW =
       user.passwordHash = getPasswordHash(req.body.pass);
     }
     user.name = req.body.name;
+
+    if (req.file) {
+      if (user.picturePath) {
+        try {
+          await fs.rm(user.picturePath);
+        } catch (err) {
+          return next(err);
+        }
+      }
+      user.picturePath = req.file.path;
+    }
 
     try {
       objectRepo.db.models.userModel.update(user);

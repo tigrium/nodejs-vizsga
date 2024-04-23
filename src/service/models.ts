@@ -6,6 +6,7 @@ export type User = {
   email: string;
   passwordHash: string;
   name: string;
+  picturePath?: string;
 };
 
 export type OriginalPost = {

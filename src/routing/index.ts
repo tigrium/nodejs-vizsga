@@ -26,9 +26,11 @@ import {
   signupUserMW,
 } from '../middlewares';
 import { KukoriDb } from '../service/db';
+import { initMulter } from '../service/multer';
 
-export const addRoutes = (app: Express, db: KukoriDb) => {
+export const addRoutes = async (app: Express, db: KukoriDb) => {
   const objectRepository = { db, uuid };
+  const uploadMW = await initMulter();
 
   app.use(sessionCheckMW(objectRepository));
 
@@ -87,6 +89,7 @@ export const addRoutes = (app: Express, db: KukoriDb) => {
   app.post(
     '/profile',
     authMW(objectRepository),
+    uploadMW.single('picture'),
     setUserDataMW(objectRepository),
     redirectMW(objectRepository, '/profile'),
     mistakeHandlerMW(objectRepository),

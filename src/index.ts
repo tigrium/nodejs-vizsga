@@ -8,15 +8,16 @@ import { getProcessEnv, initProcessEnv } from './service/processEnv';
 import { getSessionMW } from './middlewares/getSessionMW';
 import { staticRouter } from './routing/static';
 
-initProcessEnv();
+(async () => {
+  try {
+    initProcessEnv();
+    const app = express();
 
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.set('views', path.join(__dirname, 'views'));
+    app.set('view engine', 'ejs');
 
-initDatabase()
-  .then((db) => {
+    const db = await initDatabase();
     app.use(staticRouter());
     app.use(getSessionMW(app));
 
@@ -26,7 +27,7 @@ initDatabase()
     app.listen(port, () => {
       console.log(`[server]: Server is running at http://localhost:${port}`);
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     console.log(err);
-  });
+  }
+})();

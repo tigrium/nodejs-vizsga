@@ -5,7 +5,8 @@ import { getProcessEnv } from '../service/processEnv';
 import { LokiStore } from '../service/LokiStore';
 
 declare module 'express-session' {
-  export interface SessionData {
+  // eslint-disable-next-line no-unused-vars
+  interface SessionData {
     userId: string;
   }
 }
