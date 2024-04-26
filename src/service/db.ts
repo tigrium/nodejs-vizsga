@@ -30,7 +30,7 @@ export const initDatabase = (): Promise<KukoriDb> => {
       if (userModel === null) {
         userModel = database.addCollection<User>('users', {
           indices: ['id'],
-          unique: ['id', 'email'],
+          unique: ['id', 'email', 'name'],
         });
       }
       let forgotPassModel = database.getCollection<ForgotPass>('forgotpass');

@@ -19,7 +19,7 @@
     <div class="input-group mb-3 my-2">
       <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
       <div class="form-floating">
-        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="<%= me.email %>" />
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="<%= typeof email !== 'undefined' ? email : me.email %>" />
         <label for="email">E-mail cím</label>
       </div>
     </div>
@@ -43,7 +43,7 @@
     <div class="input-group mb-3 my-2">
       <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
       <div class="form-floating">
-        <input type="text" class="form-control" id="name" name="name" placeholder="Név" value="<%= me.name %>" />
+        <input type="text" class="form-control" id="name" name="name" placeholder="Név" value="<%= typeof name !== 'undefined' ? name : me.name %>" />
         <label for="name">Megjelenítendő név</label>
       </div>
     </div>

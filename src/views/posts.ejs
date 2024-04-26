@@ -12,7 +12,7 @@
 <% if (typeof me !== 'undefined' && typeof user === 'undefined' && typeof myPosts === 'undefined') { %>
 <form action="/post" method="post">
   <div class="form-floating">
-    <textarea class="form-control" placeholder="Gondolatok" id="text" name="text" style="height: 100px"></textarea>
+    <textarea class="form-control" placeholder="Gondolatok" id="text" name="text" style="height: 100px"><%= typeof text !== 'undefined' ? text : '' %></textarea>
     <label for="floatingTextarea2">Gondolataim a nagyvilágnak</label>
   </div>
   <div style="text-align: right;">

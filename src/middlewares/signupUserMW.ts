@@ -17,13 +17,14 @@ export const signupUserMW =
     if (req.body.pass !== req.body.passAgain) {
       mistakes.push('A két jelszó nem egyezik.');
     }
-    if (mistakes.length > 0) {
-      return next(new MistakeError(mistakes));
-    }
 
     const emailExists = objectRepo.db.models.userModel.findOne({ email: req.body.email });
     if (emailExists) {
-      return next(new MistakeError('Ezzel az e-mail címmel már létezik profil.'));
+      mistakes.push('Ezzel az e-mail címmel már létezik profil.');
+    }
+
+    if (mistakes.length > 0) {
+      return next(new MistakeError(mistakes));
     }
 
     const user: User = {

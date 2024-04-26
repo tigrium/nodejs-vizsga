@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { MistakeError, ObjectRepository } from '../service/types';
 
 /**
- * Hibakezelő middleware. A kapott `MistakeError` hiba message és/vagy `messages` értékeit elmenti a `locals.errors: string[]` értékbe.
+ * Hibakezelő middleware. A kapott `MistakeError` hiba message és/vagy `messages` értékeit elmenti a `session.errors: string[]` értékbe, majd átirányít a forrás oldalra.
  * Más hibát továbbdob.
  */
 export const mistakeHandlerMW =
@@ -10,13 +10,18 @@ export const mistakeHandlerMW =
     if (!(err instanceof MistakeError)) {
       return next(err);
     }
-    const errors = new Set();
+    const errors = new Set<string>();
     [err.message, ...(err.messages ?? [])].forEach((message) => {
       if (message) {
         errors.add(message);
       }
     });
-
-    res.locals = { ...res.locals, errors, ...req.body };
-    next();
+    req.session.errors = Array.from(errors.values());
+    req.session.reqBody = req.body;
+    req.session.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(req.path);
+    });
   };

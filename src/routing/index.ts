@@ -42,25 +42,17 @@ export const addRoutes = async (app: Express, db: KukoriDb) => {
     signupUserMW(objectRepository),
     redirectMW(objectRepository, '/login'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'signup'),
   );
 
   app.get('/login', noauthMW(objectRepository), renderMW(objectRepository, 'login'));
 
-  app.post(
-    '/login',
-    noauthMW(objectRepository),
-    loginUserMW(objectRepository),
-    mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'login'),
-  );
+  app.post('/login', noauthMW(objectRepository), loginUserMW(objectRepository), mistakeHandlerMW(objectRepository));
 
   app.get(
     '/forgotpass/:secret',
     noauthMW(objectRepository),
     checkForgotPassMW(objectRepository),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'forgotpass'),
   );
 
   app.post(
@@ -70,7 +62,6 @@ export const addRoutes = async (app: Express, db: KukoriDb) => {
     setPassMW(objectRepository),
     redirectMW(objectRepository, '/'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'forgotpass'),
   );
 
   app.get('/forgotpass', noauthMW(objectRepository), renderMW(objectRepository, 'forgotpass'));
@@ -81,7 +72,6 @@ export const addRoutes = async (app: Express, db: KukoriDb) => {
     createPassRequestMW(objectRepository),
     redirectMW(objectRepository, '/'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'forgotpass'),
   );
 
   app.get('/profile', authMW(objectRepository), renderMW(objectRepository, 'profile'));
@@ -93,7 +83,6 @@ export const addRoutes = async (app: Express, db: KukoriDb) => {
     setUserDataMW(objectRepository),
     redirectMW(objectRepository, '/profile'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'profile'),
   );
 
   app.post('/logout', authMW(objectRepository), noauthMW(objectRepository, '/'));
@@ -104,7 +93,6 @@ export const addRoutes = async (app: Express, db: KukoriDb) => {
     postMW(objectRepository),
     redirectMW(objectRepository, '/'),
     mistakeHandlerMW(objectRepository),
-    renderMW(objectRepository, 'posts'),
   );
 
   app.post('/repost/:postId', authMW(objectRepository), repostMW(objectRepository), redirectMW(objectRepository, '/'));

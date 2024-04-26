@@ -19,22 +19,28 @@ export const setUserDataMW =
     if ((req.body.pass || req.body.passAgain) && req.body.pass !== req.body.passAgain) {
       mistakes.push('A két jelszó nem egyezik.');
     }
-    if (mistakes.length > 0) {
-      return next(new MistakeError(mistakes));
-    }
 
     const user = objectRepo.db.models.userModel.findOne({ id: req.session.userId }) as User;
 
     if (user.email !== req.body.email) {
       const userWithThisEmail = objectRepo.db.models.userModel.findOne({ email: req.body.email });
       if (userWithThisEmail) {
-        return next(new MistakeError('Ez az e-mail cím már szerepel a rendszerben.'));
+        mistakes.push('Ez az e-mail cím már szerepel a rendszerben.');
       }
     }
     if (req.body.pass) {
       user.passwordHash = getPasswordHash(req.body.pass);
     }
-    user.name = req.body.name;
+    if (user.name !== req.body.name) {
+      const userWithThisName = objectRepo.db.models.userModel.findOne({ name: req.body.name });
+      if (userWithThisName) {
+        mistakes.push('Ez a név már foglalt.');
+      }
+    }
+
+    if (mistakes.length > 0) {
+      return next(new MistakeError(mistakes));
+    }
 
     if (req.file) {
       if (user.picturePath) {

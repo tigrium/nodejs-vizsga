@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import { Express, Request } from 'express';
 import session, { SessionOptions } from 'express-session';
 
 import { getProcessEnv } from '../service/processEnv';
@@ -8,6 +8,8 @@ declare module 'express-session' {
   // eslint-disable-next-line no-unused-vars
   interface SessionData {
     userId: string;
+    errors?: string[];
+    reqBody?: Request['body'];
   }
 }
 
