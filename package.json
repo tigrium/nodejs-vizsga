@@ -11,7 +11,10 @@
     "buildCss": "sass src/scss/theme.scss public/theme.css",
     "postbuild": "npm run copyEjs",
     "prettify": "prettier --write src/**/*.ts",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "test": "jest",
+    "test-html": "jest --reporters=default --reporters=jest-html-reporters",
+    "test-coverage": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -29,8 +32,10 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
+    "@types/jest": "^29.5.12",
     "@types/lokijs": "^1.5.14",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.12.5",
@@ -43,9 +48,12 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
+    "jest": "^29.7.0",
+    "jest-html-reporters": "^3.1.7",
     "nodemon": "^3.1.0",
     "prettier": "3.2.5",
     "sass": "^1.75.0",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4"
   }
