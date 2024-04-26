@@ -1,14 +1,17 @@
 <% if (typeof post !== 'undefined') { %>
 <div class="card mt-3">
-  <div class="card-header">
-    <div><%= post.user %></div>
-    <div class="fw-lighter" style="font-size: 80%;"><%= post.ts %></div>
+  <div class="card-header d-flex flex-row align-items-center">
+    <%- include('profileIcon', {picturePath: post.user.picturePath, noIcon: true, imgClass: 'me-2'}) %>
+    <div>
+      <div><%= post.user.name %></div>
+      <div class="fw-lighter" style="font-size: 80%;"><%= post.ts %></div>
+    </div>
   </div>
   <div class="card-body">
     <p style="white-space: pre-line"><%= post.text %></p>
     <% if (typeof post.original !== 'undefined' && post.original !== null) { %>
     <footer class="blockquote-footer">
-      <%= post.original.user %>&nbsp;<span class="fw-lighter" style="font-size: 80%;">(<%= post.original.ts %>)</span>
+      <%= post.original.user.name %>&nbsp;<span class="fw-lighter" style="font-size: 80%;">(<%= post.original.ts %>)</span>
     </footer>
     <% } %>
   </div>

@@ -20,11 +20,13 @@ export type ObjectRepository = {
   uuid: () => string;
 };
 
+export type PostUser = { name: string; picturePath: string | null };
+
 export type PostToRender = Omit<OriginalPost, 'userId' | 'ts'> & {
-  user?: string;
+  user?: PostUser;
   ts: string;
   original?: {
-    user: string;
+    user: PostUser;
     ts: string;
   } | null;
 };

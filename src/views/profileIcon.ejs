@@ -1,5 +1,7 @@
-<% if (typeof picturePath !== 'undefined') { %>
-<img src="/<%= picturePath %>" alt="Profilkép" class="object-fit-contain" style="width: 24px; height: 24px; border-radius: 12px;" />
+<% if (typeof picturePath !== 'undefined' && picturePath) { %>
+<img src="/<%= picturePath %>" alt="Profilkép" class="object-fit-contain<%= typeof imgClass !== 'undefined' ? ` ${imgClass}`  :'' %>" style="width: 24px; height: 24px; border-radius: 12px;" />
 <% } else if (typeof noIcon === 'undefined' || !noIcon) { %>
-<i class="bi bi-person"></i>
+<span class="<%= typeof imgClass !== 'undefined' ? imgClass  :'' %>" style="width: 24px; height: 24px; text-align: center;">
+  <i class="bi bi-person"></i>
+</span>
 <% } %>

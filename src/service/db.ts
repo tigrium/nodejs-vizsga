@@ -1,6 +1,6 @@
 import Loki, { Collection } from 'lokijs';
 import { ForgotPass, OriginalPost, Post, RePost, User } from './models';
-import { PostToRender } from './types';
+import { PostToRender, PostUser } from './types';
 import { formatTs } from './formatDate';
 
 export type KukoriDb = {
@@ -53,35 +53,36 @@ export const initDatabase = (): Promise<KukoriDb> => {
   });
 };
 
-export class UserNameResolver {
+export class UserResolver {
   private userModel: Collection<User>;
-  private userNames: Map<string, string>;
+  private userData: Map<string, PostUser>;
 
   constructor(userModel: Collection<User>) {
     this.userModel = userModel;
-    this.userNames = new Map<string, string>();
+    this.userData = new Map<string, PostUser>();
   }
 
-  getName(id: string) {
-    if (this.userNames.has(id)) {
-      return this.userNames.get(id) as string;
+  getData(id: string) {
+    if (this.userData.has(id)) {
+      return this.userData.get(id) as PostUser;
     }
     const user = this.userModel.findOne({ id });
     if (!user) {
       throw new Error('Felhasználó nem található.');
     }
-    this.userNames.set(id, user.name);
-    return user.name;
+    const userData: PostUser = { name: user.name, picturePath: user.picturePath || null };
+    this.userData.set(id, userData);
+    return userData;
   }
 }
 
 export class PostResolver {
   private postModel: Collection<Post>;
-  private nameResolver: UserNameResolver;
+  private nameResolver: UserResolver;
 
   constructor(postModel: Collection<Post>, userModel: Collection<User>) {
     this.postModel = postModel;
-    this.nameResolver = new UserNameResolver(userModel);
+    this.nameResolver = new UserResolver(userModel);
   }
 
   private originalPost(post: Post, withoutUser?: boolean): PostToRender | null {
@@ -95,14 +96,15 @@ export class PostResolver {
       ts: formatTs(ts),
     };
     if (!withoutUser) {
-      toRender.user = this.nameResolver.getName(userId);
+      const userData = this.nameResolver.getData(userId);
+      toRender.user = userData;
     }
     return toRender;
   }
 
   private userAndTs(post: Post): PostToRender['original'] {
     return {
-      user: this.nameResolver.getName(post.userId),
+      user: this.nameResolver.getData(post.userId),
       ts: formatTs(post.ts),
     };
   }
@@ -126,7 +128,7 @@ export class PostResolver {
       original,
     };
     if (!withoutUser) {
-      toRender.user = this.nameResolver.getName(userId);
+      toRender.user = this.nameResolver.getData(userId);
     }
     return toRender;
   }
@@ -138,6 +140,6 @@ export class PostResolver {
   }
 
   getName(userId: string) {
-    return this.nameResolver.getName(userId);
+    return this.nameResolver.getData(userId);
   }
 }

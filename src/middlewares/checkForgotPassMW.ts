@@ -35,6 +35,5 @@ export const checkForgotPassMW =
 
     res.locals.ok = true;
     res.locals.forgotPass = forgotPass;
-
     next();
   };

@@ -53,6 +53,7 @@ export const addRoutes = async (app: Express, db: KukoriDb) => {
     noauthMW(objectRepository),
     checkForgotPassMW(objectRepository),
     mistakeHandlerMW(objectRepository),
+    renderMW(objectRepository, 'forgotpass'),
   );
 
   app.post(
