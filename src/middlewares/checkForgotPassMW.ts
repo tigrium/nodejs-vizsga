@@ -9,13 +9,19 @@ import { isAfter } from 'date-fns';
  * Ha érvényes, a `locals.forgotPass` értékbe menti az igénylés db objektumát.
  */
 export const checkForgotPassMW =
-  (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
+  ({
+    db: {
+      database,
+      models: { forgotPassModel },
+    },
+  }: ObjectRepository) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.params.secret, UuidInput);
     if (mistakes.length > 0) {
       return next(new MistakeError(mistakes));
     }
 
-    const forgotPass = objectRepo.db.models.forgotPassModel.findOne({ secret: req.params.secret });
+    const forgotPass = forgotPassModel.findOne({ secret: req.params.secret });
     if (!forgotPass) {
       res.locals.ok = false;
       return next();
@@ -25,8 +31,8 @@ export const checkForgotPassMW =
 
     if (!res.locals.ok) {
       try {
-        objectRepo.db.models.forgotPassModel.remove(forgotPass);
-        objectRepo.db.database.save();
+        forgotPassModel.remove(forgotPass);
+        database.save();
         return next();
       } catch (err) {
         return next(err);

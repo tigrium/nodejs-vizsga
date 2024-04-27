@@ -8,13 +8,18 @@ import { UuidInput } from '../service/inputSchemas';
  * (Ha nem saját vagy nem létező post, hibát dob, amit külön nem kezel, csak a végén.)
  */
 export const getMyPostMW =
-  (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
+  ({
+    db: {
+      models: { postModel },
+    },
+  }: ObjectRepository) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.params.postId, UuidInput);
     if (mistakes.length > 0) {
       return next(new MistakeError(mistakes));
     }
 
-    const myPost = objectRepo.db.models.postModel.findOne({ id: req.params.postId, userId: res.locals.me.id });
+    const myPost = postModel.findOne({ id: req.params.postId, userId: res.locals.me.id });
 
     if (!myPost) {
       return next(new MistakeError('Bejegyzés nem található.'));
