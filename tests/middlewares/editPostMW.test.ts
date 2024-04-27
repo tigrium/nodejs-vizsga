@@ -1,6 +1,6 @@
 import { describe, expect, test, jest } from '@jest/globals';
 import { editPostMW } from '../../src/middlewares';
-import { ObjectRepository } from '../../src/service/types';
+import { MistakeError, ObjectRepository } from '../../src/service/types';
 import { Request, Response } from 'express';
 
 describe('editPostsW', () => {
@@ -43,5 +43,43 @@ describe('editPostsW', () => {
     expect(objectRepo.db.database.save).toBeCalled();
     expect(res.locals.myPost.text).toEqual('def');
     expect(next).toBeCalledWith();
+  });
+
+  test('Helytelen input', async () => {
+    const objectRepo = {
+      db: {
+        models: {
+          postModel: {
+            update: jest.fn(),
+          },
+        },
+        database: {
+          save: jest.fn(),
+        },
+      },
+    } as unknown as ObjectRepository;
+    const req = {
+      body: {
+        post: 'def',
+      },
+    } as Request;
+    const res = {
+      locals: {
+        myPost: {
+          id: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
+          text: 'abc',
+        },
+      },
+      redirect: jest.fn(),
+    } as unknown as Response;
+    const next = jest.fn(err => {
+      expect(err).toBeInstanceOf(MistakeError);
+    });
+
+    await editPostMW(objectRepo)(req, res, next);
+    expect(next).toBeCalled();
+    expect(objectRepo.db.models.postModel.update).not.toBeCalled();
+    expect(objectRepo.db.database.save).not.toBeCalled();
+    expect(res.locals.myPost.text).toEqual('abc');
   });
 });
