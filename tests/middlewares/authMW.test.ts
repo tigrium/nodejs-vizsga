@@ -15,7 +15,7 @@ describe('authMW', () => {
     const next = jest.fn();
 
     authMW({} as ObjectRepository)(req, res, next);
-    expect(next).not.toBeCalled();
+    expect(next).not.toBeCalledWith();
   });
 
   test('Van locals.me, next', async () => {

@@ -19,9 +19,9 @@ describe('checkForgotPassMW', () => {
             remove: jest.fn(),
           },
         },
-        save: jest.fn((err) => {
-          expect(err).toBeUndefined();
-        }),
+        database: {
+          save: jest.fn(),
+        },
       },
     } as unknown as ObjectRepository;
     const req = {
@@ -39,9 +39,10 @@ describe('checkForgotPassMW', () => {
       secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
     });
     expect(objectRepo.db.models.forgotPassModel.remove).not.toBeCalled();
+    expect(objectRepo.db.database.save).not.toBeCalled();
     expect(res.locals.ok).toBe(true);
     expect(res.locals.forgotPass).toEqual({ valid });
-    expect(next).toBeCalled();
+    expect(next).toBeCalledWith();
   });
 
   test('Létező :secret, lejárt', async () => {
@@ -58,9 +59,9 @@ describe('checkForgotPassMW', () => {
             remove: jest.fn(),
           },
         },
-        save: jest.fn((err) => {
-          expect(err).toBeUndefined();
-        }),
+        database: {
+          save: jest.fn(),
+        },
       },
     } as unknown as ObjectRepository;
     const req = {
@@ -78,9 +79,10 @@ describe('checkForgotPassMW', () => {
       secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
     });
     expect(objectRepo.db.models.forgotPassModel.remove).toBeCalledWith({ valid });
+    expect(objectRepo.db.database.save).toBeCalled();
     expect(res.locals.ok).toBe(false);
     expect(res.locals.forgotPass).toBeUndefined();
-    expect(next).toBeCalled();
+    expect(next).toBeCalledWith();
   });
 
   test('Nem létező :secret', async () => {
@@ -89,11 +91,12 @@ describe('checkForgotPassMW', () => {
         models: {
           forgotPassModel: {
             findOne: jest.fn(),
+            remove: jest.fn(),
           },
         },
-        save: jest.fn((err) => {
-          expect(err).toBeUndefined();
-        }),
+        database: {
+          save: jest.fn(),
+        },
       },
     } as unknown as ObjectRepository;
     const req = {
@@ -110,13 +113,27 @@ describe('checkForgotPassMW', () => {
     expect(objectRepo.db.models.forgotPassModel.findOne).toBeCalledWith({
       secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
     });
+    expect(objectRepo.db.models.forgotPassModel.remove).not.toBeCalled();
+    expect(objectRepo.db.database.save).not.toBeCalled();
     expect(res.locals.ok).toBe(false);
     expect(res.locals.forgotPass).toBeUndefined();
-    expect(next).toBeCalled();
+    expect(next).toBeCalledWith();
   });
 
   test('Hibás :secret formátum', async () => {
-    const objectRepo = {} as ObjectRepository;
+    const objectRepo = {
+      db: {
+        models: {
+          forgotPassModel: {
+            findOne: jest.fn(),
+            remove: jest.fn(),
+          },
+        },
+        database: {
+          save: jest.fn(),
+        },
+      },
+    } as unknown as ObjectRepository;
     const req = {
       params: {
         secret: 'abc',
