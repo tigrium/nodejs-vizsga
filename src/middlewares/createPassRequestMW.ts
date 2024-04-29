@@ -26,7 +26,6 @@ export const createPassRequestMW =
 
     const user = userModel.findOne({ email: req.body.email });
     if (!user) {
-      console.table(await userModel.find());
       // Nem tájékoztatjuk a felhasználót, hogy az adott cím regisztrálva van-e a rendszerben.
       return next();
     }
@@ -49,12 +48,12 @@ export const createPassRequestMW =
         recipient: user.email,
         subject: 'Elfelejtett jelszó kérés',
         message: `Kedves ${user.name}!
-    
-    Ezen a címen állíthatsz be új jelszót: ${req.protocol}://${req.headers.host}/forgotpass/${forgotpass.secret}
-    A link 1 órán keresztül érvényes.
-    
-    Üdvözlettel,
-    Kukori`,
+
+Ezen a címen állíthatsz be új jelszót: ${req.protocol}://${req.headers.host}/forgotpass/${forgotpass.secret}
+A link 1 órán keresztül érvényes.
+
+Üdvözlettel,
+Kukori`,
       });
     } catch (err) {
       return next(err);

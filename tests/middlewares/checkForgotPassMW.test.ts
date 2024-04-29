@@ -149,4 +149,92 @@ describe('checkForgotPassMW', () => {
 
     await checkForgotPassMW(objectRepo)(req, res, next);
   });
+
+  test('Törlésnél hiba', async () => {
+    const valid = addMinutes(new Date(), -10);
+    const objectRepo = {
+      db: {
+        models: {
+          forgotPassModel: {
+            findOne: jest.fn(() => {
+              return {
+                valid,
+              };
+            }),
+            remove: jest.fn(() => {
+              throw new Error('error');
+            }),
+          },
+        },
+        database: {
+          save: jest.fn(),
+        },
+      },
+    } as unknown as ObjectRepository;
+    const req = {
+      params: {
+        secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
+      },
+    } as unknown as Request;
+    const res = {
+      locals: {},
+    } as unknown as Response;
+    const next = jest.fn((err: any) => {
+      expect(err.message).toEqual('error');
+    });
+
+    await checkForgotPassMW(objectRepo)(req, res, next);
+    expect(objectRepo.db.models.forgotPassModel.findOne).toBeCalledWith({
+      secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
+    });
+    expect(objectRepo.db.models.forgotPassModel.remove).toBeCalledWith({ valid });
+    expect(objectRepo.db.database.save).not.toBeCalled();
+    expect(res.locals.ok).toBe(false);
+    expect(res.locals.forgotPass).toBeUndefined();
+    expect(next).toBeCalled();
+  });
+
+  test('Mentésnél hiba', async () => {
+    const valid = addMinutes(new Date(), -10);
+    const objectRepo = {
+      db: {
+        models: {
+          forgotPassModel: {
+            findOne: jest.fn(() => {
+              return {
+                valid,
+              };
+            }),
+            remove: jest.fn(),
+          },
+        },
+        database: {
+          save: jest.fn(() => {
+            throw new Error('error');
+          }),
+        },
+      },
+    } as unknown as ObjectRepository;
+    const req = {
+      params: {
+        secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
+      },
+    } as unknown as Request;
+    const res = {
+      locals: {},
+    } as unknown as Response;
+    const next = jest.fn((err: any) => {
+      expect(err.message).toEqual('error');
+    });
+
+    await checkForgotPassMW(objectRepo)(req, res, next);
+    expect(objectRepo.db.models.forgotPassModel.findOne).toBeCalledWith({
+      secret: '85dc8f73-7c58-4e5d-a63a-c746321b9351',
+    });
+    expect(objectRepo.db.models.forgotPassModel.remove).toBeCalledWith({ valid });
+    expect(objectRepo.db.database.save).toBeCalled();
+    expect(res.locals.ok).toBe(false);
+    expect(res.locals.forgotPass).toBeUndefined();
+    expect(next).toBeCalled();
+  });
 });
