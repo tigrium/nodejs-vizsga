@@ -1,11 +1,11 @@
-import { describe, expect, test, jest, afterEach } from '@jest/globals';
+import { describe, expect, test, jest, beforeEach } from '@jest/globals';
 import { createPassRequestMW } from '../../src/middlewares';
 import { MistakeError, ObjectRepository } from '../../src/service/types';
 import { Request, Response } from 'express';
 import * as sendEmailModule from '../../src/service/sendEmail';
 
 describe('createPassRequestMW', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
