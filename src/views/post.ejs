@@ -1,9 +1,11 @@
 <% if (typeof post !== 'undefined') { %>
 <div class="card mt-3">
   <div class="card-header d-flex flex-row align-items-center">
-    <%- include('profileIcon', {picturePath: post.user.picturePath, noIcon: true, imgClass: 'me-2'}) %>
+    <%- include('profileIcon', {picturePath: post.user?.picturePath, noIcon: true, imgClass: 'me-2'}) %>
     <div>
+      <% if (typeof post.user !== 'undefined') { %>
       <div><%= post.user.name %></div>
+      <% } %>
       <div class="fw-lighter" style="font-size: 80%;"><%= post.ts %></div>
     </div>
   </div>
