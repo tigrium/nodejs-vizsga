@@ -44,7 +44,7 @@ export const getPostsByUserMW =
     try {
       const postResolver = new PostResolver(postModel, userModel);
 
-      const user = postResolver.getName(req.params.userId);
+      const user = postResolver.getUserData(req.params.userId);
       const posts = postResolver.getPosts(
         postModel.find({ userId: req.params.userId }).sort((a, b) => (a.ts > b.ts ? -1 : 1)),
         true,

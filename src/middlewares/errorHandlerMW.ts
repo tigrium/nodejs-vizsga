@@ -6,6 +6,6 @@ import { ObjectRepository } from '../service/types';
  */
 export const errorHandlerMW =
   (objectRepo: ObjectRepository) => (err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(err);
+    console.log(err.message, err.stack);
     res.render('error');
   };

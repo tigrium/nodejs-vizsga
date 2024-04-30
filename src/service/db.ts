@@ -139,7 +139,7 @@ export class PostResolver {
     );
   }
 
-  getName(userId: string) {
+  getUserData(userId: string) {
     return this.nameResolver.getData(userId);
   }
 }
