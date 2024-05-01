@@ -7,35 +7,46 @@ import { inputCheck } from '../service/inputCheck';
 /**
  * A bejegyzések listáját menti a `locals.posts` értékbe. A repostok adatait is hozzáfűzi az adatokhoz.
  */
-export const getPostsMW = (objectRepo: ObjectRepository) => (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const postResolver = new PostResolver(objectRepo.db.models.postModel, objectRepo.db.models.userModel);
+export const getPostsMW =
+  ({
+    db: {
+      models: { postModel, userModel },
+    },
+  }: ObjectRepository) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const postResolver = new PostResolver(postModel, userModel);
 
-    const posts = postResolver.getPosts(objectRepo.db.models.postModel.find().sort((a, b) => (a.ts > b.ts ? -1 : 1)));
+      const posts = postResolver.getPosts(postModel.find().sort((a, b) => (a.ts > b.ts ? -1 : 1)));
 
-    res.locals.posts = posts;
-    next();
-  } catch (err) {
-    return next(err);
-  }
-};
+      res.locals.posts = posts;
+      next();
+    } catch (err) {
+      return next(err);
+    }
+  };
 
 /**
  * A `:userId` alapján kiválasztott felhasználó bejegyzéseit listázza. A repostok adatait hozzáfűzi az adatokhoz,
  * de az egyes bejegyzésekhez nem fűz hozzá szerző felhasználót. A listát a `locals.posts` értékbe menti.
  */
 export const getPostsByUserMW =
-  (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
+  ({
+    db: {
+      models: { postModel, userModel },
+    },
+  }: ObjectRepository) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.params.userId, UuidInput);
     if (mistakes.length > 0) {
       return next(new MistakeError(mistakes));
     }
     try {
-      const postResolver = new PostResolver(objectRepo.db.models.postModel, objectRepo.db.models.userModel);
+      const postResolver = new PostResolver(postModel, userModel);
 
-      const user = postResolver.getName(req.params.userId);
+      const user = postResolver.getUserData(req.params.userId);
       const posts = postResolver.getPosts(
-        objectRepo.db.models.postModel.find({ userId: req.params.userId }).sort((a, b) => (a.ts > b.ts ? -1 : 1)),
+        postModel.find({ userId: req.params.userId }).sort((a, b) => (a.ts > b.ts ? -1 : 1)),
         true,
       );
 

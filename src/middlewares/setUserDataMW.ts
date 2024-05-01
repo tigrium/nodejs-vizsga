@@ -11,7 +11,13 @@ import { getPasswordHash } from '../service/passwordHash';
  * A paraméterben kapott felhasználóadatokat menti.
  */
 export const setUserDataMW =
-  (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
+  ({
+    db: {
+      database,
+      models: { userModel },
+    },
+  }: ObjectRepository) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(
       req.body,
       req.body.pass || req.body.passAgain ? ProfileInput : ProfileInputWithoutPass,
@@ -20,10 +26,10 @@ export const setUserDataMW =
       mistakes.push('A két jelszó nem egyezik.');
     }
 
-    const user = objectRepo.db.models.userModel.findOne({ id: req.session.userId }) as User;
+    const user = userModel.findOne({ id: req.session.userId }) as User;
 
     if (user.email !== req.body.email) {
-      const userWithThisEmail = objectRepo.db.models.userModel.findOne({ email: req.body.email });
+      const userWithThisEmail = userModel.findOne({ email: req.body.email });
       if (userWithThisEmail) {
         mistakes.push('Ez az e-mail cím már szerepel a rendszerben.');
       }
@@ -32,7 +38,7 @@ export const setUserDataMW =
       user.passwordHash = getPasswordHash(req.body.pass);
     }
     if (user.name !== req.body.name) {
-      const userWithThisName = objectRepo.db.models.userModel.findOne({ name: req.body.name });
+      const userWithThisName = userModel.findOne({ name: req.body.name });
       if (userWithThisName) {
         mistakes.push('Ez a név már foglalt.');
       }
@@ -54,8 +60,8 @@ export const setUserDataMW =
     }
 
     try {
-      objectRepo.db.models.userModel.update(user);
-      objectRepo.db.database.save();
+      userModel.update(user);
+      database.save();
     } catch (err) {
       return next(err);
     }

@@ -10,13 +10,18 @@ import { inputCheck } from '../service/inputCheck';
  * Ha nem találja, hibát dob. Ha megtalálja, beállítja a sessiont és átirányít a kezdőlapra.
  */
 export const loginUserMW =
-  (objectRepo: ObjectRepository) => async (req: Request, res: Response, next: NextFunction) => {
+  ({
+    db: {
+      models: { userModel },
+    },
+  }: ObjectRepository) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mistakes = await inputCheck(req.body, LoginInput);
     if (mistakes.length > 0) {
       return next(new MistakeError(mistakes));
     }
 
-    const user = objectRepo.db.models.userModel.findOne({ email: req.body.email });
+    const user = userModel.findOne({ email: req.body.email });
     if (!user || user.passwordHash !== getPasswordHash(req.body.pass)) {
       return next(new MistakeError('E-mail cím vagy jelszó hibás.'));
     }

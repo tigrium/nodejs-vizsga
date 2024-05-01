@@ -1,7 +1,7 @@
 <%- include('header') %>
 
 <% if (typeof user !== 'undefined') { %>
-<h1 class="h3 mb-3 fw-normal"><%= user %></h1>
+<h1 class="h3 mb-3 fw-normal"><%= user.name %></h1>
 <%} %>
 <% if (typeof myPosts !== 'undefined' && myPosts) { %>
 <h1 class="h3 mb-3 fw-normal">Kikukorékolt gondolataim</h1>
