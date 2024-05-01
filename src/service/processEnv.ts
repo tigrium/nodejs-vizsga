@@ -1,6 +1,14 @@
+import fs from 'fs/promises';
 import dotenv from 'dotenv';
+import { v4 as uuid } from 'uuid';
 
-export const initProcessEnv = () => {
+export const initProcessEnv = async () => {
+  try {
+    await fs.access('.env');
+  } catch (err) {
+    await fs.writeFile('.env', `COOKIE_SECRET=${uuid()}\nPASS_SECRET=${uuid()}`);
+  }
+
   const { error } = dotenv.config();
   if (error) {
     throw error;

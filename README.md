@@ -13,7 +13,7 @@ A [`connect-loki`](https://www.npmjs.com/package/connect-loki?activeTab=readme) 
 
 ## Futtatáshoz
 
-A `.env` fájlban a következő értékeknek kell szerepelni:
+A `.env` fájlban a következő értékeknek kell szerepelni (ha nem létezik a fájl, akkor generál egyet és kitölti a minimálisan szükséges adatokkal):
 
 ```
 COOKIE_SECRET=...

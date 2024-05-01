@@ -9,7 +9,6 @@ export const initMulter = async (): Promise<Multer> => {
   try {
     await fs.access(UPLOADS_DIR);
   } catch (err) {
-    console.log('fs error', err);
     fs.mkdir(UPLOADS_DIR);
   }
 
