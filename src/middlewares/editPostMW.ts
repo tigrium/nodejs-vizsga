@@ -23,10 +23,9 @@ export const editPostMW =
 
     try {
       postModel.update(res.locals.myPost);
-      database.save();
     } catch (err) {
       return next(err);
     }
 
-    next();
+    return database.save(next);
   };

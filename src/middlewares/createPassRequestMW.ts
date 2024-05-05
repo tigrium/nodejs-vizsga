@@ -38,7 +38,7 @@ export const createPassRequestMW =
 
     try {
       forgotPassModel.insert(forgotpass);
-      database.save();
+      await new Promise<void>((resolve, reject) => database.save((err?: any) => err ? reject(err) : resolve()));
     } catch (err) {
       return next(err);
     }

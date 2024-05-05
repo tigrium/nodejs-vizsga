@@ -61,10 +61,9 @@ export const setUserDataMW =
 
     try {
       userModel.update(user);
-      database.save();
     } catch (err) {
       return next(err);
     }
 
-    next();
+    return database.save(next);
   };

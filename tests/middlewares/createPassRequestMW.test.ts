@@ -29,7 +29,7 @@ describe('createPassRequestMW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: () => void) => cb()),
         },
       },
       uuid: jest.fn(() => {
@@ -52,7 +52,7 @@ describe('createPassRequestMW', () => {
     await createPassRequestMW(objectRepo)(req, res, next);
     expect(objectRepo.db.models.userModel.findOne).toBeCalledWith({ email: 'email@example.com' });
     expect(objectRepo.db.models.forgotPassModel.insert).toBeCalled();
-    expect(objectRepo.db.database.save).toBeCalledWith();
+    expect(objectRepo.db.database.save).toBeCalled();
     expect(sendEmail).toBeCalledWith({
       recipient: 'email@example.com',
       subject: 'Elfelejtett jelszó kérés',
@@ -79,7 +79,9 @@ Kukori`,
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
       uuid: jest.fn(() => {
@@ -115,7 +117,9 @@ Kukori`,
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
       uuid: jest.fn(() => {
@@ -160,7 +164,9 @@ Kukori`,
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
       uuid: jest.fn(() => {
@@ -202,8 +208,8 @@ Kukori`,
           },
         },
         database: {
-          save: jest.fn(() => {
-            throw new Error('error');
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb(new Error('error'));
           }),
         },
       },
@@ -229,7 +235,7 @@ Kukori`,
     await createPassRequestMW(objectRepo)(req, res, next);
     expect(objectRepo.db.models.userModel.findOne).toBeCalledWith({ email: 'email@example.com' });
     expect(objectRepo.db.models.forgotPassModel.insert).toBeCalled();
-    expect(objectRepo.db.database.save).toBeCalledWith();
+    expect(objectRepo.db.database.save).toBeCalled();
     expect(sendEmail).not.toBeCalled();
     expect(next).toBeCalled();
   });
@@ -254,7 +260,9 @@ Kukori`,
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
       uuid: jest.fn(() => {
@@ -281,7 +289,7 @@ Kukori`,
     await createPassRequestMW(objectRepo)(req, res, next);
     expect(objectRepo.db.models.userModel.findOne).toBeCalledWith({ email: 'email@example.com' });
     expect(objectRepo.db.models.forgotPassModel.insert).toBeCalled();
-    expect(objectRepo.db.database.save).toBeCalledWith();
+    expect(objectRepo.db.database.save).toBeCalled();
     expect(sendEmail).toBeCalled();
     expect(next).toBeCalled();
   });

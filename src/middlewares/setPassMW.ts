@@ -36,11 +36,9 @@ export const setPassMW =
 
       user.passwordHash = getPasswordHash(req.body.pass);
       userModel.update(user);
-
-      database.save();
     } catch (err) {
       return next(err);
     }
 
-    next();
+    return database.save(next);
   };

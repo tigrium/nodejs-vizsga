@@ -36,10 +36,9 @@ export const repostMW =
 
     try {
       postModel.insert(post);
-      database.save();
     } catch (err) {
       return next(err);
     }
 
-    next();
+    return database.save(next);
   };

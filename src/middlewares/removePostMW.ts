@@ -18,10 +18,9 @@ export const removePostMW =
         postModel.remove(post);
       });
       postModel.remove(res.locals.myPost);
-      database.save();
     } catch (err) {
       return next(err);
     }
 
-    next();
+    return database.save(next);
   };

@@ -13,7 +13,9 @@ describe('editPostsW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -54,7 +56,9 @@ describe('editPostsW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -94,7 +98,9 @@ describe('editPostsW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -137,8 +143,8 @@ describe('editPostsW', () => {
           },
         },
         database: {
-          save: jest.fn(() => {
-            throw new Error('error');
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb(new Error('error'));
           }),
         },
       },

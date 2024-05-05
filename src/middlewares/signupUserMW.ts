@@ -29,6 +29,10 @@ export const signupUserMW =
     if (emailExists) {
       mistakes.push('Ezzel az e-mail címmel már létezik profil.');
     }
+    const nameExists = userModel.findOne({ name: req.body.name });
+    if (nameExists) {
+      mistakes.push('Ezzel a névvel már létezik profil.');
+    }
 
     if (mistakes.length > 0) {
       return next(new MistakeError(mistakes));
@@ -43,10 +47,9 @@ export const signupUserMW =
 
     try {
       userModel.insert(user);
-      database.save();
     } catch (err) {
       return next(err);
     }
 
-    next();
+    return database.save(next);
   };

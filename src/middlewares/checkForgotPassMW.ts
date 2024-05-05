@@ -32,7 +32,7 @@ export const checkForgotPassMW =
     if (!res.locals.ok) {
       try {
         forgotPassModel.remove(forgotPass);
-        database.save();
+        await new Promise<void>((resolve, reject) => database.save(err => err ? reject(err) : resolve()));
         return next();
       } catch (err) {
         return next(err);

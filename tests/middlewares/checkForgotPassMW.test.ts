@@ -20,7 +20,9 @@ describe('checkForgotPassMW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -60,7 +62,9 @@ describe('checkForgotPassMW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -95,7 +99,9 @@ describe('checkForgotPassMW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -130,7 +136,9 @@ describe('checkForgotPassMW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -167,7 +175,9 @@ describe('checkForgotPassMW', () => {
           },
         },
         database: {
-          save: jest.fn(),
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb();
+          }),
         },
       },
     } as unknown as ObjectRepository;
@@ -209,8 +219,8 @@ describe('checkForgotPassMW', () => {
           },
         },
         database: {
-          save: jest.fn(() => {
-            throw new Error('error');
+          save: jest.fn((cb: (err?: any) => void) => {
+            cb(new Error('error'));
           }),
         },
       },
